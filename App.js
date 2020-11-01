@@ -23,6 +23,7 @@ from 'react-native-vector-icons/MaterialCommunityIcons';*/
 
 import FirstPage from './pages/FirstPage';
 import SecondPage from './pages/SecondPage';
+import HomeTab from './tabpages/HomeTab';
 
 const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
@@ -46,8 +47,9 @@ function TabStack() {
         },
       }}>
       <Tab.Screen
+      
         name="FirstPage"
-        component={FirstPage}
+        component={HomeTab}
         options={{
           tabBarLabel: 'Home',
           // tabBarIcon: ({ color, size }) => (
