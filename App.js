@@ -32,7 +32,8 @@ const Tab = createMaterialBottomTabNavigator();
 
 function TabStack() {
   return (
-    <Tab.Navigator
+    //By default shifting value is true, so if tab is more than 3 than label hide
+    <Tab.Navigator shifting={false}
       initialRouteName="ChatTab"
       tabBarOptions={{
         activeTintColor: '#FFFFFF',
