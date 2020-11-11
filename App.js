@@ -18,12 +18,14 @@ import {
   createMaterialBottomTabNavigator
 } from '@react-navigation/material-bottom-tabs';
 /*import
-  MaterialCommunityIcons
-from 'react-native-vector-icons/MaterialCommunityIcons';*/
+MaterialCommunityIcons
+  from 'react-native-vector-icons/MaterialCommunityIcons';*/
 
 import FirstPage from './pages/FirstPage';
 import SecondPage from './pages/SecondPage';
 import HomeTab from './tabpages/HomeTab';
+import ChatTab from './tabpages/ChatTab';
+import EventTab from './tabpages/EventTab';
 
 const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
@@ -31,7 +33,7 @@ const Tab = createMaterialBottomTabNavigator();
 function TabStack() {
   return (
     <Tab.Navigator
-      initialRouteName="Feed"
+      initialRouteName="ChatTab"
       tabBarOptions={{
         activeTintColor: '#FFFFFF',
         inactiveTintColor: '#F8F8F8',
@@ -44,14 +46,28 @@ function TabStack() {
         indicatorStyle: {
           borderBottomColor: '#87B56A',
           borderBottomWidth: 2,
-        },
+        }
       }}>
       <Tab.Screen
-      
+
         name="FirstPage"
         component={HomeTab}
         options={{
           tabBarLabel: 'Home',
+          // tabBarIcon: ({ color, size }) => (
+          //   <MaterialCommunityIcons
+          //     name="home"
+          //     color={color}
+          //     size={size}
+          //   />
+          // ),
+        }} />
+      <Tab.Screen
+
+        name="ChatTab"
+        component={ChatTab}
+        options={{
+          tabBarLabel: 'Chat',
           // tabBarIcon: ({ color, size }) => (
           //   <MaterialCommunityIcons
           //       name="home"
@@ -60,6 +76,21 @@ function TabStack() {
           //     />
           // ),
         }} />
+      <Tab.Screen
+
+        name="EventTab"
+        component={EventTab}
+        options={{
+          tabBarLabel: 'Event',
+          // tabBarIcon: ({ color, size }) => (
+          //   <MaterialCommunityIcons
+          //       name="Event"
+          //       color={color}
+          //       size={size}
+          //     />
+          // ),
+        }} />
+      {}
       <Tab.Screen
         name="SecondPage"
         component={SecondPage}
@@ -81,7 +112,7 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Settings"
+        initialRouteName="ChatTab"
         screenOptions={{
           headerStyle: { backgroundColor: '#633689' },
           headerTintColor: '#fff',
