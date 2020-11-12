@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Text, View } from 'react-native';
 
-class HomeTab extends React.Component {
+class ChatTab extends React.Component {
     render() {
         return (
           <View
@@ -15,4 +15,4 @@ class HomeTab extends React.Component {
         );
       }
 }
-export default HomeTab;
+export default ChatTab;
