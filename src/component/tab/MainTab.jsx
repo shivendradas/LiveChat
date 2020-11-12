@@ -21,7 +21,7 @@ import {
 MaterialCommunityIcons
   from 'react-native-vector-icons/MaterialCommunityIcons';*/
 
-import SecondPage from '../../pages/SecondPage';
+//import SecondPage from '../../pages/SecondPage';
 import HomeTab from './HomeTab';
 import ChatTab from './ChatTab';
 import EventTab from './EventTab';
@@ -50,7 +50,7 @@ function TabStack() {
             }}>
             <Tab.Screen
 
-                name="FirstPage"
+                name="HomeTab"
                 component={HomeTab}
                 options={{
                     tabBarLabel: 'Home',
@@ -85,20 +85,6 @@ function TabStack() {
                     // tabBarIcon: ({ color, size }) => (
                     //   <MaterialCommunityIcons
                     //       name="Event"
-                    //       color={color}
-                    //       size={size}
-                    //     />
-                    // ),
-                }} />
-            {}
-            <Tab.Screen
-                name="SecondPage"
-                component={SecondPage}
-                options={{
-                    tabBarLabel: 'Setting',
-                    // tabBarIcon: ({ color, size }) => (
-                    //   <MaterialCommunityIcons
-                    //       name="settings"
                     //       color={color}
                     //       size={size}
                     //     />

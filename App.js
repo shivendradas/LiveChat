@@ -8,8 +8,8 @@
 import 'react-native-gesture-handler';
 
 import * as React from 'react';
+import MainTab from './src/component/tab/MainTab';
 
-import MainTab from './component/tab/MainTab';
 
 function App() {
   return (
