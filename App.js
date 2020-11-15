@@ -8,13 +8,14 @@
 import 'react-native-gesture-handler';
 
 import * as React from 'react';
-import MainTab from './src/component/tab/MainTab';
+import Login from './src/component/login/Login';
 
 class App extends React.Component {
   render() {
     return (
-      <MainTab />
+      <Login />
     );
   }
 }
+
 export default App;

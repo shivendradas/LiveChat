@@ -10,17 +10,17 @@ import {
 import LoginLogo from './LoginLogo';
 import Form from './Form';
 
-class Login extends Component {
+class LoginRegister extends Component {
 
     render() {
         return (
 
             <View style={styles.container}>
                 <LoginLogo />
-                <Form type="Login" />
+                <Form type="Register" />
                 <View style={styles.signupTextCont}>
-                    <Text style={styles.signupText}>Dont have an account yet?</Text>
-                    <TouchableOpacity onPress={this.signup}><Text style={styles.signupButton}> Register</Text></TouchableOpacity>
+                    <Text style={styles.signupText}>Already have an account?</Text>
+                    <TouchableOpacity onPress={this.signup}><Text style={styles.signupButton}> Login</Text></TouchableOpacity>
                 </View>
             </View>
         )
@@ -50,4 +50,4 @@ const styles = StyleSheet.create({
         fontWeight: '500'
     }
 });
-export default Login
+export default LoginRegister
