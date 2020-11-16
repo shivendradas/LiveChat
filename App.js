@@ -8,12 +8,16 @@
 import 'react-native-gesture-handler';
 
 import * as React from 'react';
-import Login from './src/component/login/Login';
+import { Provider } from 'react-redux'
+import store from './src/store/store'
+import Authentication from './src/component/login/Authentication';
 
 class App extends React.Component {
   render() {
     return (
-      <Login />
+      <Provider store={store}>
+        <Authentication />
+      </Provider>      
     );
   }
 }
