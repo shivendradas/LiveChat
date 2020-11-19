@@ -13,8 +13,9 @@ export const loginSuccess = (loginDetail) => {
      }
 }
 
-export const loginRegister = () => {
+export const loginRegister = (loginDetail) => {
     return {
-        type: LOGIN_REGISTER
+        type: LOGIN_REGISTER,
+        loginDetail
      }
 }

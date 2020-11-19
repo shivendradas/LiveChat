@@ -1,26 +1,32 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import {
-    ScrollView,
     Text,
     StyleSheet,
-    TextInput,
     View,
     TouchableOpacity
 } from 'react-native';
 import LoginLogo from './LoginLogo';
 import Form from './Form';
+import { loginRegister } from '../../action/loginAction';
+import { FORM_TYPE } from '../../constant/loginTypes';
 
-class Login extends Component {
-
+class Login extends React.Component {
+    constructor(props) {
+        super(props)
+    }
+    static defaultProps = {
+        formType: FORM_TYPE.Login
+    }
     render() {
         return (
 
             <View style={styles.container}>
                 <LoginLogo />
-                <Form type="Login" />
+                <Form type={this.props.formType} />
                 <View style={styles.signupTextCont}>
                     <Text style={styles.signupText}>Dont have an account yet?</Text>
-                    <TouchableOpacity onPress={this.signup}><Text style={styles.signupButton}> Register</Text></TouchableOpacity>
+                    <TouchableOpacity onPress={async () => { await this.props.changeToRegistrationState(FORM_TYPE.Registration) }}><Text style={styles.signupButton}> Register</Text></TouchableOpacity>
                 </View>
             </View>
         )
@@ -50,4 +56,20 @@ const styles = StyleSheet.create({
         fontWeight: '500'
     }
 });
-export default Login
+
+const mapStateToProps = (state) => {
+    return {
+        isAuthenticated: state.auth.isAuthenticated,
+        isLoginRegister: state.auth.isLoginRegister,
+        formType: state.auth.formType
+    }
+};
+
+const mapDispatchToProps = (dispatch) =>{
+    return {
+        changeToRegistrationState: (formType) => {
+            dispatch(loginRegister({ formType: formType, isAuthenticated: false, isLoginRegister: true}))
+        }
+    }
+}
+export default connect(null, mapDispatchToProps)(Login)
