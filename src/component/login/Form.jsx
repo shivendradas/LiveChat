@@ -11,6 +11,7 @@ import {
     PermissionsAndroid
 } from 'react-native';
 import { updateMobileNumber } from '../../action/loginAction';
+import { FORM_TYPE } from '../../constant/loginTypes';
 
 class Form extends Component {
     constructor(props) {
@@ -30,6 +31,19 @@ class Form extends Component {
             }
         }
 
+    }
+    displayJsxMessage() {
+        if (this.props.type == FORM_TYPE.Registration) {
+            return <TextInput style={styles.inputBox}
+            underlineColorAndroid='rgba(0,0,0,0)'
+            placeholder="Password"
+            secureTextEntry={true}
+            placeholderTextColor="#ffffff"
+            ref={(input) => this.password = input}
+        />
+        } else {
+            return ;
+        }
     }
 
     render() {
@@ -56,6 +70,7 @@ class Form extends Component {
                     placeholderTextColor="#ffffff"
                     ref={(input) => this.password = input}
                 />
+                {this.displayJsxMessage()}
                 <TouchableOpacity style={styles.button}>
                     <Text style={styles.buttonText}>{this.props.type}</Text>
                 </TouchableOpacity>
