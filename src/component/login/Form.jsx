@@ -18,15 +18,18 @@ class Form extends Component {
     }
 
     componentDidMount() {
-        PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_PHONE_STATE);
         this.getMobileNumber();
     }
 
-    getMobileNumber() {
-        const detail = RNSimData.getSimInfo();
-        if (detail) {
-            this.props.updateMobileNumber(detail.phoneNumber0);
+    async getMobileNumber() {
+        const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_PHONE_STATE)
+        if (granted == PermissionsAndroid.RESULTS.GRANTED) {
+            const detail = RNSimData.getSimInfo();
+            if (detail) {
+                this.props.updateMobileNumber(detail.phoneNumber0);
+            }
         }
+
     }
 
     render() {
