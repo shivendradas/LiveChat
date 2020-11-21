@@ -1,21 +1,40 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
+import RNSimData from 'react-native-sim-data'
 
 import {
     StyleSheet,
     Text,
     View,
     TextInput,
-    TouchableOpacity
+    TouchableOpacity,
+    PermissionsAndroid
 } from 'react-native';
+import { updateMobileNumber } from '../../action/loginAction';
 
-export default class Form extends Component {
+class Form extends Component {
+    constructor(props) {
+        super(props)
+    }
+
+    componentDidMount() {
+        PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_PHONE_STATE);
+        this.getMobileNumber();
+    }
+
+    getMobileNumber() {
+        const detail = RNSimData.getSimInfo();
+        if (detail) {
+            this.props.updateMobileNumber(detail.phoneNumber0);
+        }
+    }
 
     render() {
         return (
             <View style={styles.container}>
                 <TextInput style={styles.inputBox} editable={false}
                     underlineColorAndroid='rgba(0,0,0,0)'
-                    placeholder="+918287126634"
+                    value={this.props.mobileNumber + ""}
                     placeholderTextColor="#ffffff"
                     selectionColor="#fff"
                 />
@@ -72,3 +91,17 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     }
 });
+const mapStateToProps = (state) => {
+    return {
+        mobileNumber: state.auth.mobileNumber
+    }
+};
+const mapDispatchToProps = (dispatch) => {
+    return {
+        updateMobileNumber: (mobileNumber) => {
+            dispatch(updateMobileNumber(mobileNumber))
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Form)

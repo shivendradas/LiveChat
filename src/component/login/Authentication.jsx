@@ -13,7 +13,8 @@ class Authentication extends React.Component {
         this.checkAuthentication();
     }
     checkAuthentication() {
-        if (false) {
+        const file  = require('../../res/register.json');
+        if (file && (file.user && file.user != "")) {
             this.props.changeAuthenticationState(true, "Shiva");
         } else {
             this.props.changeAuthenticationState(false, null);

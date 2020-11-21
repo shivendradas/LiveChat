@@ -1,10 +1,11 @@
-import { LOGIN_INITIALIZE, LOGIN_REGISTER, LOGIN_SUCCESS, LOGIN, FORM_TYPE } from '../constant/loginTypes'
+import { LOGIN_INITIALIZE, LOGIN_REGISTER, LOGIN_SUCCESS, LOGIN, FORM_TYPE, UPDATE_MOBILE_NUMBER } from '../constant/loginTypes'
 const initialState = {
     isAuthenticated: false,
     isLoginRegister: false,
     isLogin: false,
     formType: FORM_TYPE.Login,
-    userName: null
+    userName: null,
+    mobileNumber: 0,
 };
 
 const loginReducer = (state = initialState, action) => {
@@ -17,11 +18,14 @@ const loginReducer = (state = initialState, action) => {
             });
 
         case LOGIN_REGISTER:
-            console.log("reed");
-            console.log(action);
             return Object.assign({}, state, {
                 isAuthenticated: action.loginDetail.isAuthenticated,
                 isLoginRegister: action.loginDetail.isLoginRegister
+            });
+
+        case UPDATE_MOBILE_NUMBER:
+            return Object.assign({}, state, {
+                mobileNumber: action.mobileNumber
             });
         case LOGIN:
             return { ...state, isLoginRegister: false, isAuthenticated: false, isLogin: true };
