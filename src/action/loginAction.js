@@ -1,7 +1,29 @@
-import { LOGIN_INITIALIZE, LOGIN_REGISTER, LOGIN_SUCCESS, UPDATE_MOBILE_NUMBER } from '../constant/loginTypes'
-export const initializeApp = () => {
+import { LOGIN, LOGIN_INITIALIZE, LOGIN_REGISTER, LOGIN_SUCCESS, SET_EMAIL, SET_PASSWORD, UPDATE_MOBILE_NUMBER } from '../constant/loginTypes'
+import { LOGIN_URL } from '../constant/serviceUrls';
+/*export const initializeApp = () => {
     return {
         type: LOGIN_INITIALIZE
+    }
+}*/
+export const setUserDetail = (response) => {
+    return {
+        type: LOGIN,
+        response
+    }
+}
+export const login = (userDetail) => {
+    console.log(userDetail);
+    return async (dispatch) => {
+        try {
+            const userData = await fetch(LOGIN_URL, {
+                method: 'GET'
+            });
+            console.log(userData);
+            await dispatch(setUserDetail(userData));
+            return userData || [];
+        } catch (error) {
+            console.error(error);
+        }
     }
 }
 
@@ -24,5 +46,21 @@ export const updateMobileNumber = (mobileNumber) => {
     return {
         type: UPDATE_MOBILE_NUMBER,
         mobileNumber
+    }
+}
+
+export const setEmail = (email) => {
+    console.log("mkkkl====")
+    console.log(email)
+    return {
+        type: SET_EMAIL,
+        registeredEmail: email
+    }
+}
+
+export const setPassword = (password) => {
+    return {
+        type: SET_PASSWORD,
+        password
     }
 }

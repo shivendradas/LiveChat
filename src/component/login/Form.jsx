@@ -10,7 +10,7 @@ import {
     TouchableOpacity,
     PermissionsAndroid
 } from 'react-native';
-import { updateMobileNumber } from '../../action/loginAction';
+import { updateMobileNumber, login, setEmail, setPassword } from '../../action/loginAction';
 import { FORM_TYPE } from '../../constant/loginTypes';
 
 class Form extends Component {
@@ -32,17 +32,17 @@ class Form extends Component {
         }
 
     }
-    displayJsxMessage() {
+    confirmPassword() {
         if (this.props.type == FORM_TYPE.Registration) {
             return <TextInput style={styles.inputBox}
-            underlineColorAndroid='rgba(0,0,0,0)'
-            placeholder="Password"
-            secureTextEntry={true}
-            placeholderTextColor="#ffffff"
-            ref={(input) => this.password = input}
-        />
+                underlineColorAndroid='rgba(0,0,0,0)'
+                placeholder="Password"
+                secureTextEntry={true}
+                placeholderTextColor="#ffffff"
+                ref={(input) => this.password = input}
+            />
         } else {
-            return ;
+            return;
         }
     }
 
@@ -62,6 +62,7 @@ class Form extends Component {
                     selectionColor="#fff"
                     keyboardType="email-address"
                     onSubmitEditing={() => this.password.focus()}
+                    onChangeText={this.props.setEmail}
                 />
                 <TextInput style={styles.inputBox}
                     underlineColorAndroid='rgba(0,0,0,0)'
@@ -69,9 +70,10 @@ class Form extends Component {
                     secureTextEntry={true}
                     placeholderTextColor="#ffffff"
                     ref={(input) => this.password = input}
+                    onChangeText={this.props.setPassword}
                 />
-                {this.displayJsxMessage()}
-                <TouchableOpacity style={styles.button}>
+                {this.confirmPassword()}
+                <TouchableOpacity style={styles.button} onPress={async () => { await this.props.login(this.props.mobileNumber, this.props.registeredEmail, this.props.password) }}>
                     <Text style={styles.buttonText}>{this.props.type}</Text>
                 </TouchableOpacity>
             </View>
@@ -111,13 +113,24 @@ const styles = StyleSheet.create({
 });
 const mapStateToProps = (state) => {
     return {
-        mobileNumber: state.auth.mobileNumber
+        mobileNumber: state.auth.mobileNumber,
+        registeredEmail: state.auth.registeredEmail,
+        password: state.auth.password,
     }
 };
 const mapDispatchToProps = (dispatch) => {
     return {
         updateMobileNumber: (mobileNumber) => {
             dispatch(updateMobileNumber(mobileNumber))
+        },
+        login: (mobileNumber, registeredEmail, password) => {
+            dispatch(login({ mobileNumber, registeredEmail, password }))
+        },
+        setEmail: (registeredEmail) => {
+            dispatch(setEmail(registeredEmail))
+        },
+        setPassword: (password) => {
+            dispatch(setPassword(password))
         }
     }
 }

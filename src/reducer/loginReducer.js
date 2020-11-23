@@ -1,10 +1,12 @@
-import { LOGIN_INITIALIZE, LOGIN_REGISTER, LOGIN_SUCCESS, LOGIN, FORM_TYPE, UPDATE_MOBILE_NUMBER } from '../constant/loginTypes'
+import { LOGIN_INITIALIZE, LOGIN_REGISTER, LOGIN_SUCCESS, LOGIN, FORM_TYPE, UPDATE_MOBILE_NUMBER, SET_PASSWORD, SET_EMAIL } from '../constant/loginTypes'
 const initialState = {
     isAuthenticated: false,
     isLoginRegister: false,
     isLogin: false,
     formType: FORM_TYPE.Login,
     userName: null,
+    registeredEmail: "",
+    password: "",
     mobileNumber: 0,
 };
 
@@ -28,7 +30,18 @@ const loginReducer = (state = initialState, action) => {
                 mobileNumber: action.mobileNumber
             });
         case LOGIN:
-            return { ...state, isLoginRegister: false, isAuthenticated: false, isLogin: true };
+            return Object.assign({}, state, action.userDetail);
+        case SET_EMAIL:
+            return Object.assign({}, state, {
+                registeredEmail: action.registeredEmail
+            });
+        case SET_PASSWORD:
+            console.log("pass===");
+            console.log(action)
+            return Object.assign({}, state,
+                {
+                    password: action.password
+                });
 
         default:
             return state;
