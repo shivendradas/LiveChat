@@ -10,7 +10,7 @@ import {
     TouchableOpacity,
     PermissionsAndroid
 } from 'react-native';
-import { updateMobileNumber, login, setEmail, setPassword } from '../../action/loginAction';
+import { updateMobileNumber, login, userRegister, setEmail, setPassword } from '../../action/loginAction';
 import { FORM_TYPE } from '../../constant/loginTypes';
 
 class Form extends Component {
@@ -118,13 +118,17 @@ const mapStateToProps = (state) => {
         password: state.auth.password,
     }
 };
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch, props) => {
     return {
         updateMobileNumber: (mobileNumber) => {
             dispatch(updateMobileNumber(mobileNumber))
         },
         login: (mobileNumber, registeredEmail, password) => {
-            dispatch(login({ mobileNumber, registeredEmail, password }))
+            if(props.type == FORM_TYPE.Registration){
+                dispatch(userRegister({ mobileNumber, registeredEmail, password }));
+            } else {
+                dispatch(login({ mobileNumber, registeredEmail, password }));
+            }           
         },
         setEmail: (registeredEmail) => {
             dispatch(setEmail(registeredEmail))

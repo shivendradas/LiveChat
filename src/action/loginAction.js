@@ -26,6 +26,23 @@ export const login = (userDetail) => {
         }
     }
 }
+export const userRegister = (userDetail) => {
+    console.log(userDetail);
+    return async (dispatch) => {
+        try {
+            const userData = await fetch(LOGIN_URL, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+                body: JSON.stringify(userDetail)
+            });
+            console.log(userData);
+            await dispatch(setUserDetail(userData));
+            return userData || [];
+        } catch (error) {
+            console.error(error);
+        }
+    }
+}
 
 export const loginSuccess = (loginDetail) => {
     console.log(loginDetail);
