@@ -10,7 +10,7 @@ import {
     TouchableOpacity,
     PermissionsAndroid
 } from 'react-native';
-import { updateMobileNumber, login, userRegister, setEmail, setPassword } from '../../action/loginAction';
+import { updateMobileNumber, login, userRegister, setEmail, setPassword, setConfirmPassword } from '../../action/loginAction';
 import { FORM_TYPE } from '../../constant/loginTypes';
 
 class Form extends Component {
@@ -39,10 +39,60 @@ class Form extends Component {
                 placeholder="Password"
                 secureTextEntry={true}
                 placeholderTextColor="#ffffff"
+                onChangeText={this.props.setConfirmPassword}
                 ref={(input) => this.password = input}
             />
         } else {
             return;
+        }
+    }
+
+    /**
+     * Before submit form, check all entries is valid or not
+     */
+    isValidation() {
+        const mobileNumber = this.props.mobileNumber;
+        if (mobileNumber == undefined || this.props.mobileNumber.length < 12) {
+            return false;
+        } else if (this.props.registeredEmail == "") {
+            console.error("email is empty.");
+            return false;
+        } else if (this.props.registeredEmail != "" && !this.validateEmail(this.props.registeredEmail)) {
+            console.error("Email is not valid..")
+            return false;
+        } else if (this.props.password == "" || (this.props.type == FORM_TYPE.Registration && this.props.confirmPassword == "")) {
+            console.error("password is empty..");
+            return false;
+        } else if (this.props.password != "" && (this.props.type == FORM_TYPE.Registration && this.props.confirmPassword == "")) {
+            console.error("confirm password is empty..");
+            return false;
+        }
+        else if (this.props.type == FORM_TYPE.Registration && this.props.password != this.props.confirmPassword) {
+            console.log(this.props.password + "==" + this.props.confirmPassword)
+            console.error("password is not same");
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * check wheather email is valid or not
+     * @param {*} email 
+     */
+    validateEmail(email) {
+        let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        if (reg.test(email) === false) {
+            console.log("Email is Not Correct");
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+    onSubmit() {
+        if (this.isValidation()) {
+            this.props.login(this.props.mobileNumber, this.props.registeredEmail, this.props.password);
         }
     }
 
@@ -73,7 +123,7 @@ class Form extends Component {
                     onChangeText={this.props.setPassword}
                 />
                 {this.confirmPassword()}
-                <TouchableOpacity style={styles.button} onPress={async () => { await this.props.login(this.props.mobileNumber, this.props.registeredEmail, this.props.password) }}>
+                <TouchableOpacity style={styles.button} onPress={async () => { await this.onSubmit() }}>
                     <Text style={styles.buttonText}>{this.props.type}</Text>
                 </TouchableOpacity>
             </View>
@@ -116,6 +166,7 @@ const mapStateToProps = (state) => {
         mobileNumber: state.auth.mobileNumber,
         registeredEmail: state.auth.registeredEmail,
         password: state.auth.password,
+        confirmPassword: state.auth.confirmPassword
     }
 };
 const mapDispatchToProps = (dispatch, props) => {
@@ -124,17 +175,20 @@ const mapDispatchToProps = (dispatch, props) => {
             dispatch(updateMobileNumber(mobileNumber))
         },
         login: (mobileNumber, registeredEmail, password) => {
-            if(props.type == FORM_TYPE.Registration){
+            if (props.type == FORM_TYPE.Registration) {
                 dispatch(userRegister({ mobileNumber, registeredEmail, password }));
             } else {
                 dispatch(login({ mobileNumber, registeredEmail, password }));
-            }           
+            }
         },
         setEmail: (registeredEmail) => {
             dispatch(setEmail(registeredEmail))
         },
         setPassword: (password) => {
             dispatch(setPassword(password))
+        },
+        setConfirmPassword: (password) => {
+            dispatch(setConfirmPassword(password))
         }
     }
 }

@@ -7,3 +7,4 @@ export const FORM_TYPE =  {Login: 'Login', Registration: 'Registration'};
 export const UPDATE_MOBILE_NUMBER = 'UPDATE_MOBILE_NUMBER';
 export const SET_EMAIL = 'SET_EMAIL';
 export const SET_PASSWORD = 'SET_PASSWORD';
+export const SET_CONFIRM_PASSWORD = 'SET_CONFIRM_PASSWORD';

@@ -1,4 +1,4 @@
-import { LOGIN, LOGIN_INITIALIZE, LOGIN_REGISTER, LOGIN_SUCCESS, SET_EMAIL, SET_PASSWORD, UPDATE_MOBILE_NUMBER } from '../constant/loginTypes'
+import { LOGIN, LOGIN_INITIALIZE, LOGIN_REGISTER, LOGIN_SUCCESS, SET_EMAIL, SET_PASSWORD, SET_CONFIRM_PASSWORD, UPDATE_MOBILE_NUMBER } from '../constant/loginTypes'
 import { LOGIN_URL } from '../constant/serviceUrls';
 /*export const initializeApp = () => {
     return {
@@ -32,7 +32,7 @@ export const userRegister = (userDetail) => {
         try {
             const userData = await fetch(LOGIN_URL, {
                 method: 'POST',
-                headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
                 body: JSON.stringify(userDetail)
             });
             console.log(userData);
@@ -78,6 +78,13 @@ export const setEmail = (email) => {
 export const setPassword = (password) => {
     return {
         type: SET_PASSWORD,
+        password
+    }
+}
+
+export const setConfirmPassword = (password) => {
+    return {
+        type: SET_CONFIRM_PASSWORD,
         password
     }
 }
