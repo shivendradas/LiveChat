@@ -1,5 +1,6 @@
-import { LOGIN, LOGIN_INITIALIZE, LOGIN_REGISTER, LOGIN_SUCCESS, SET_EMAIL, SET_PASSWORD, SET_CONFIRM_PASSWORD, UPDATE_MOBILE_NUMBER } from '../constant/loginTypes'
+import { LOGIN, LOGIN_INITIALIZE, LOGIN_REGISTER, LOGIN_SUCCESS, SET_EMAIL, SET_PASSWORD, SET_CONFIRM_PASSWORD, UPDATE_MOBILE_NUMBER, RESPONSE, FORM_TYPE } from '../constant/loginTypes'
 import { LOGIN_URL } from '../constant/serviceUrls';
+import loginReducer from '../reducer/loginReducer';
 /*export const initializeApp = () => {
     return {
         type: LOGIN_INITIALIZE
@@ -8,6 +9,12 @@ import { LOGIN_URL } from '../constant/serviceUrls';
 export const setUserDetail = (response) => {
     return {
         type: LOGIN,
+        response
+    }
+}
+export const registerResponse = (response) => {
+    return {
+        type: RESPONSE,
         response
     }
 }
@@ -35,8 +42,14 @@ export const userRegister = (userDetail) => {
                 headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
                 body: JSON.stringify(userDetail)
             });
-            console.log(userData);
-            await dispatch(setUserDetail(userData));
+            const jsonResonse = await userData.json();
+            if(jsonResonse.error){
+                await dispatch(registerResponse(jsonResonse));
+            } else {
+                dispatch(registerResponse(""));
+                dispatch(loginRegister({ formType: FORM_TYPE.Login, isAuthenticated: false, isLoginRegister: false }));
+            }
+           
             return userData || [];
         } catch (error) {
             console.error(error);

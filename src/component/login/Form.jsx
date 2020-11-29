@@ -95,6 +95,11 @@ class Form extends Component {
             this.props.login(this.props.mobileNumber, this.props.registeredEmail, this.props.password);
         }
     }
+    showError() {
+        if (this.props.response !="") {
+            console.error(this.props.response.error)
+        }
+    }
 
     render() {
         return (
@@ -126,6 +131,7 @@ class Form extends Component {
                 <TouchableOpacity style={styles.button} onPress={async () => { await this.onSubmit() }}>
                     <Text style={styles.buttonText}>{this.props.type}</Text>
                 </TouchableOpacity>
+                {this.showError()}
             </View>
         )
     }
@@ -166,7 +172,8 @@ const mapStateToProps = (state) => {
         mobileNumber: state.auth.mobileNumber,
         registeredEmail: state.auth.registeredEmail,
         password: state.auth.password,
-        confirmPassword: state.auth.confirmPassword
+        confirmPassword: state.auth.confirmPassword,
+        response: state.auth.response
     }
 };
 const mapDispatchToProps = (dispatch, props) => {
