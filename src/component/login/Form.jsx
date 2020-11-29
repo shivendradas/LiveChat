@@ -10,7 +10,7 @@ import {
     TouchableOpacity,
     PermissionsAndroid
 } from 'react-native';
-import { updateMobileNumber, login, userRegister, setEmail, setPassword, setConfirmPassword } from '../../action/loginAction';
+import { updateMobileNumber, login, userRegister, setEmail, setPassword, setConfirmPassword, clearLoginError } from '../../action/loginAction';
 import { FORM_TYPE } from '../../constant/loginTypes';
 
 class Form extends Component {
@@ -19,6 +19,7 @@ class Form extends Component {
     }
 
     componentDidMount() {
+        this.props.clearLoginError();
         this.getMobileNumber();
     }
 
@@ -96,8 +97,9 @@ class Form extends Component {
         }
     }
     showError() {
-        if (this.props.response !="") {
-            console.error(this.props.response.error)
+        if (this.props.loginError !="") {
+            const errorMsg = this.props.loginError;
+            console.error(errorMsg)
         }
     }
 
@@ -173,7 +175,7 @@ const mapStateToProps = (state) => {
         registeredEmail: state.auth.registeredEmail,
         password: state.auth.password,
         confirmPassword: state.auth.confirmPassword,
-        response: state.auth.response
+        loginError: state.auth.loginError
     }
 };
 const mapDispatchToProps = (dispatch, props) => {
@@ -196,6 +198,9 @@ const mapDispatchToProps = (dispatch, props) => {
         },
         setConfirmPassword: (password) => {
             dispatch(setConfirmPassword(password))
+        },
+        clearLoginError: () => {
+            dispatch(clearLoginError())
         }
     }
 }

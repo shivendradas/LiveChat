@@ -1,4 +1,4 @@
-import { LOGIN, LOGIN_INITIALIZE, LOGIN_REGISTER, LOGIN_SUCCESS, SET_EMAIL, SET_PASSWORD, SET_CONFIRM_PASSWORD, UPDATE_MOBILE_NUMBER, RESPONSE, FORM_TYPE } from '../constant/loginTypes'
+import { LOGIN, LOGIN_INITIALIZE, LOGIN_REGISTER, LOGIN_SUCCESS, SET_EMAIL, SET_PASSWORD, SET_CONFIRM_PASSWORD, UPDATE_MOBILE_NUMBER, LOGIN_ERROR, FORM_TYPE, CLEAR_LOGIN_ERROR } from '../constant/loginTypes'
 import { LOGIN_URL } from '../constant/serviceUrls';
 import loginReducer from '../reducer/loginReducer';
 /*export const initializeApp = () => {
@@ -14,7 +14,7 @@ export const setUserDetail = (response) => {
 }
 export const registerResponse = (response) => {
     return {
-        type: RESPONSE,
+        type: LOGIN_ERROR,
         response
     }
 }
@@ -46,7 +46,7 @@ export const userRegister = (userDetail) => {
             if(jsonResonse.error){
                 await dispatch(registerResponse(jsonResonse));
             } else {
-                dispatch(registerResponse(""));
+                dispatch(clearLoginError());
                 dispatch(loginRegister({ formType: FORM_TYPE.Login, isAuthenticated: false, isLoginRegister: false }));
             }
            
@@ -99,5 +99,10 @@ export const setConfirmPassword = (password) => {
     return {
         type: SET_CONFIRM_PASSWORD,
         password
+    }
+}
+export const clearLoginError = () => {
+    return {
+        type: CLEAR_LOGIN_ERROR       
     }
 }
