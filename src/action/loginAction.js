@@ -1,5 +1,6 @@
-import { LOGIN, LOGIN_INITIALIZE, LOGIN_REGISTER, LOGIN_SUCCESS, SET_EMAIL, SET_PASSWORD, SET_CONFIRM_PASSWORD, UPDATE_MOBILE_NUMBER, LOGIN_ERROR, FORM_TYPE, CLEAR_LOGIN_ERROR } from '../constant/loginTypes'
-import { LOGIN_URL } from '../constant/serviceUrls';
+import { LOGIN, LOGIN_INITIALIZE, LOGIN_REGISTER, LOGIN_SUCCESS, SET_EMAIL, SET_PASSWORD, SET_CONFIRM_PASSWORD, 
+    UPDATE_MOBILE_NUMBER, LOGIN_ERROR, FORM_TYPE, CLEAR_LOGIN_ERROR, SET_DOB } from '../constant/loginTypes'
+import { LOGIN_URL, LOGIN_REGISER_URL } from '../constant/serviceUrls';
 import loginReducer from '../reducer/loginReducer';
 /*export const initializeApp = () => {
     return {
@@ -22,7 +23,7 @@ export const login = (userDetail) => {
     console.log(userDetail);
     return async (dispatch) => {
         try {
-            const userData = await fetch(LOGIN_URL, {
+            const userData = await fetch(LOGIN_REGISER_URL, {
                 method: 'GET'
             });
             console.log(userData);
@@ -37,7 +38,7 @@ export const userRegister = (userDetail) => {
     console.log(userDetail);
     return async (dispatch) => {
         try {
-            const userData = await fetch(LOGIN_URL, {
+            const userData = await fetch(LOGIN_REGISER_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
                 body: JSON.stringify(userDetail)
@@ -85,6 +86,15 @@ export const setEmail = (email) => {
     return {
         type: SET_EMAIL,
         registeredEmail: email
+    }
+}
+
+export const setDOB = (dob) => {
+    console.log("dob====")
+    console.log(dob)
+    return {
+        type: SET_DOB,
+        dob
     }
 }
 

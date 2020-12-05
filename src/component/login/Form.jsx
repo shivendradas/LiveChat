@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Provider as PaperProvider } from 'react-native-paper';
 import { connect } from 'react-redux'
 import RNSimData from 'react-native-sim-data'
 
@@ -10,19 +11,29 @@ import {
     TouchableOpacity,
     PermissionsAndroid
 } from 'react-native';
-import { updateMobileNumber, login, userRegister, setEmail, setPassword, setConfirmPassword, clearLoginError } from '../../action/loginAction';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { updateMobileNumber, login, userRegister, setEmail, setPassword, setDOB, setConfirmPassword, clearLoginError } from '../../action/loginAction';
+import { setDatepickerVisible } from "../../action/datePickerAction"
 import { FORM_TYPE } from '../../constant/loginTypes';
 
 class Form extends Component {
+    isDatepickerVisible = false;
     constructor(props) {
         super(props)
     }
 
     componentDidMount() {
-        this.props.clearLoginError();
         this.getMobileNumber();
     }
+    UNSAFE_componentWillUpdate(nextProps, nextState) {
+        console.log("will update===")
+        console.log(this.props)
+        console.log(nextProps)
+        if (this.props.dob != nextProps.dob) {
+            this.isDatepickerVisible = false;
+        }
 
+    }
     async getMobileNumber() {
         const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_PHONE_STATE)
         if (granted == PermissionsAndroid.RESULTS.GRANTED) {
@@ -46,6 +57,33 @@ class Form extends Component {
         } else {
             return;
         }
+    }
+    /**
+     * showing date picker button based on condition
+     */
+    showDatePickerButton() {
+        if (this.props.type == FORM_TYPE.Registration) {
+            return <TouchableOpacity onPress={async () => { await this.showDatePick() }}>
+                <TextInput style={styles.inputBox}
+                    underlineColorAndroid='rgba(0,0,0,0)'
+                    value={this.props.dob + ""}
+                    placeholder="date"
+                    inlineImagePadding={4}
+                    inlineImageLeft="calendar"
+                    placeholderTextColor="#ffffff"
+                    onFocus={async () => { await this.showDatePick() }}
+                />
+            </TouchableOpacity>
+
+        } else {
+            return;
+        }
+    }
+    showDatePick() {
+        this.isDatepickerVisible = true
+        this.props.setDatepickerVisible(this.isDatepickerVisible);
+        console.log("isdatepicker visible==")
+        console.log(this.props.isDatepickerVisible)
     }
 
     /**
@@ -97,10 +135,19 @@ class Form extends Component {
         }
     }
     showError() {
-        if (this.props.loginError !="") {
+        if (this.props.loginError != "") {
             const errorMsg = this.props.loginError;
             console.error(errorMsg)
         }
+    }
+    async setDate(dob) {
+        if (dob.nativeEvent.timestamp) {
+            dob = new Date(dob.nativeEvent.timestamp);
+            await this.props.setDOB(dob);
+        } else {
+            this.isDatepickerVisible = false;
+        }
+        await this.props.setDatepickerVisible(this.isDatepickerVisible);
     }
 
     render() {
@@ -130,6 +177,15 @@ class Form extends Component {
                     onChangeText={this.props.setPassword}
                 />
                 {this.confirmPassword()}
+                {this.showDatePickerButton()}
+                {this.isDatepickerVisible && (<DateTimePicker
+                    testID="dateTimePicker"
+                    value={this.props.dob}
+                    mode="date"
+                    is24Hour={true}
+                    display="calendar"
+                    onChange={(value) => { this.setDate(value) }}
+                />)}
                 <TouchableOpacity style={styles.button} onPress={async () => { await this.onSubmit() }}>
                     <Text style={styles.buttonText}>{this.props.type}</Text>
                 </TouchableOpacity>
@@ -174,8 +230,10 @@ const mapStateToProps = (state) => {
         mobileNumber: state.auth.mobileNumber,
         registeredEmail: state.auth.registeredEmail,
         password: state.auth.password,
+        dob: state.auth.dob,
         confirmPassword: state.auth.confirmPassword,
-        loginError: state.auth.loginError
+        loginError: state.auth.loginError,
+        isDatepickerVisible: state.datePicker.isDatepickerVisible
     }
 };
 const mapDispatchToProps = (dispatch, props) => {
@@ -199,8 +257,14 @@ const mapDispatchToProps = (dispatch, props) => {
         setConfirmPassword: (password) => {
             dispatch(setConfirmPassword(password))
         },
+        setDOB: (date) => {
+            dispatch(setDOB(date))
+        },
         clearLoginError: () => {
             dispatch(clearLoginError())
+        },
+        setDatepickerVisible: (isVisible) => {
+            dispatch(setDatepickerVisible(isVisible))
         }
     }
 }
