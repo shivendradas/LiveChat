@@ -11,10 +11,10 @@ import {
     TouchableOpacity,
     PermissionsAndroid
 } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import { updateMobileNumber, login, userRegister, setEmail, setPassword, setDOB, setConfirmPassword, clearLoginError } from '../../action/loginAction';
 import { setDatepickerVisible } from "../../action/datePickerAction"
 import { FORM_TYPE } from '../../constant/loginTypes';
+import CustomDatePicker from '../datepicker/CustomDatePicker';
 
 class Form extends Component {
     isDatepickerVisible = false;
@@ -141,7 +141,7 @@ class Form extends Component {
             console.error(errorMsg)
         }
     }
-    async setDate(dob) {
+    async onSelectDate(dob) {
         if (dob.nativeEvent.timestamp) {
             dob = new Date(dob.nativeEvent.timestamp);
             await this.props.setDOB(dob);
@@ -180,14 +180,7 @@ class Form extends Component {
                 />
                 {this.confirmPassword()}
                 {this.showDatePickerButton()}
-                {this.isDatepickerVisible && (<DateTimePicker
-                    testID="dateTimePicker"
-                    value={this.props.dob}
-                    mode="date"
-                    is24Hour={true}
-                    display="calendar"
-                    onChange={(value) => { this.setDate(value) }}
-                />)}
+                {this.isDatepickerVisible && (<CustomDatePicker onSelectDate={this.onSelectDate.bind(this)} selectedDate={this.props.dob}/>)}
                 <TouchableOpacity style={styles.button} onPress={async () => { await this.onSubmit() }}>
                     <Text style={styles.buttonText}>{this.props.type}</Text>
                 </TouchableOpacity>
