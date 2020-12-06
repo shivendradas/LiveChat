@@ -51,6 +51,7 @@ class Form extends Component {
                 placeholder="Password"
                 secureTextEntry={true}
                 placeholderTextColor="#ffffff"
+                selectionColor="#fff"
                 onChangeText={this.props.setConfirmPassword}
                 ref={(input) => this.password = input}
             />
@@ -173,6 +174,7 @@ class Form extends Component {
                     placeholder="Password"
                     secureTextEntry={true}
                     placeholderTextColor="#ffffff"
+                    selectionColor="#fff"
                     ref={(input) => this.password = input}
                     onChangeText={this.props.setPassword}
                 />
