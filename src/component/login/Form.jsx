@@ -131,7 +131,7 @@ class Form extends Component {
 
     onSubmit() {
         if (this.isValidation()) {
-            this.props.login(this.props.mobileNumber, this.props.registeredEmail, this.props.password);
+            this.props.login(this.props.mobileNumber, this.props.registeredEmail, this.props.password, this.props.dob);
         }
     }
     showError() {
@@ -241,9 +241,9 @@ const mapDispatchToProps = (dispatch, props) => {
         updateMobileNumber: (mobileNumber) => {
             dispatch(updateMobileNumber(mobileNumber))
         },
-        login: (mobileNumber, registeredEmail, password) => {
+        login: (mobileNumber, registeredEmail, password, dob) => {
             if (props.type == FORM_TYPE.Registration) {
-                dispatch(userRegister({ mobileNumber, registeredEmail, password }));
+                dispatch(userRegister({ mobileNumber, registeredEmail, password, dob }));
             } else {
                 dispatch(login({ mobileNumber, registeredEmail, password }));
             }
