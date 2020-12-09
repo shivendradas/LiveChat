@@ -1,8 +1,8 @@
-import { LOGIN_INITIALIZE, LOGIN_REGISTER, LOGIN_SUCCESS, LOGIN, FORM_TYPE, UPDATE_MOBILE_NUMBER, SET_PASSWORD, SET_EMAIL, SET_DOB, SET_CONFIRM_PASSWORD, LOGIN_ERROR, CLEAR_LOGIN_ERROR } from '../constant/loginTypes'
+import { SAVE_USER_INFO, LOGIN_REGISTER, LOGIN_SUCCESS, LOGIN, FORM_TYPE, UPDATE_MOBILE_NUMBER, SET_PASSWORD, SET_EMAIL, SET_DOB, SET_CONFIRM_PASSWORD, LOGIN_ERROR, CLEAR_LOGIN_ERROR } from '../constant/loginTypes'
 const initialState = {
     isAuthenticated: false,
     isLoginRegister: false,
-    isLogin: false,
+    isLoginSuccess: false,
     formType: FORM_TYPE.Login,
     userName: null,
     registeredEmail: "",
@@ -10,13 +10,13 @@ const initialState = {
     confirmPassword: "",
     mobileNumber: 0,
     loginError:"",
+    saveUserInfo: {},
     dob: new Date(),
 };
 
 const loginReducer = (state = initialState, action) => {
     switch (action.type) {
         case LOGIN_SUCCESS:
-            //return { ...state, isLoginRegister: false, isAuthenticated: action.loginDetail.isAuthenticated, isLogin: false };
             return Object.assign({}, state, {
                 isAuthenticated: action.loginDetail.isAuthenticated,
                 userName: action.loginDetail.userName,
@@ -32,8 +32,11 @@ const loginReducer = (state = initialState, action) => {
             return Object.assign({}, state, {
                 mobileNumber: action.mobileNumber
             });
-        case LOGIN:
-            return Object.assign({}, state, action.userDetail);
+        case SAVE_USER_INFO:
+            return Object.assign({}, state, {
+                saveUserInfo: action.response.userDetail,
+                isLoginSuccess: action.response.isLoginSuccess
+            });
         case SET_EMAIL:
             return Object.assign({}, state, {
                 registeredEmail: action.registeredEmail

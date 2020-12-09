@@ -1,5 +1,7 @@
-import { LOGIN, LOGIN_INITIALIZE, LOGIN_REGISTER, LOGIN_SUCCESS, SET_EMAIL, SET_PASSWORD, SET_CONFIRM_PASSWORD, 
-    UPDATE_MOBILE_NUMBER, LOGIN_ERROR, FORM_TYPE, CLEAR_LOGIN_ERROR, SET_DOB } from '../constant/loginTypes'
+import {
+    LOGIN, SAVE_USER_INFO, LOGIN_REGISTER, LOGIN_SUCCESS, SET_EMAIL, SET_PASSWORD, SET_CONFIRM_PASSWORD,
+    UPDATE_MOBILE_NUMBER, LOGIN_ERROR, FORM_TYPE, CLEAR_LOGIN_ERROR, SET_DOB
+} from '../constant/loginTypes'
 import { LOGIN_URL, LOGIN_REGISER_URL } from '../constant/serviceUrls';
 import loginReducer from '../reducer/loginReducer';
 /*export const initializeApp = () => {
@@ -9,7 +11,7 @@ import loginReducer from '../reducer/loginReducer';
 }*/
 export const setUserDetail = (response) => {
     return {
-        type: LOGIN,
+        type: SAVE_USER_INFO,
         response
     }
 }
@@ -23,11 +25,18 @@ export const login = (userDetail) => {
     console.log(userDetail);
     return async (dispatch) => {
         try {
-            const userData = await fetch(LOGIN_REGISER_URL, {
-                method: 'GET'
+            const userData = await fetch(LOGIN_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                body: JSON.stringify(userDetail)
             });
-            console.log(userData);
-            await dispatch(setUserDetail(userData));
+            const jsonResonse = await userData.json();
+            if (jsonResonse.error) {
+                await dispatch(registerResponse(jsonResonse));
+            } else {
+                dispatch(clearLoginError());
+                dispatch(setUserDetail({ userDetail, isLoginSuccess: true }));
+            }
             return userData || [];
         } catch (error) {
             console.error(error);
@@ -44,13 +53,13 @@ export const userRegister = (userDetail) => {
                 body: JSON.stringify(userDetail)
             });
             const jsonResonse = await userData.json();
-            if(jsonResonse.error){
+            if (jsonResonse.error) {
                 await dispatch(registerResponse(jsonResonse));
             } else {
                 dispatch(clearLoginError());
                 dispatch(loginRegister({ formType: FORM_TYPE.Login, isAuthenticated: false, isLoginRegister: false }));
             }
-           
+
             return userData || [];
         } catch (error) {
             console.error(error);
@@ -113,6 +122,6 @@ export const setConfirmPassword = (password) => {
 }
 export const clearLoginError = () => {
     return {
-        type: CLEAR_LOGIN_ERROR       
+        type: CLEAR_LOGIN_ERROR
     }
 }

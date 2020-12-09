@@ -7,6 +7,7 @@ export const CLEAR_LOGIN_ERROR = 'CLEAR_LOGIN_ERROR';
 export const LOGIN_INITIALIZE = 'LOGIN_INITIALIZE';
 export const FORM_TYPE =  {Login: 'Login', Registration: 'Registration'};
 export const UPDATE_MOBILE_NUMBER = 'UPDATE_MOBILE_NUMBER';
+export const SAVE_USER_INFO = "SAVE_USER_INFO";
 export const SET_EMAIL = 'SET_EMAIL';
 export const SET_DOB = 'SET_DOB';
 export const SET_PASSWORD = 'SET_PASSWORD';

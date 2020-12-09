@@ -8,8 +8,9 @@ import {
 } from 'react-native';
 import LoginLogo from './LoginLogo';
 import Form from './Form';
-import { loginRegister } from '../../action/loginAction';
+import { loginRegister, loginSuccess } from '../../action/loginAction';
 import { FORM_TYPE } from '../../constant/loginTypes';
+var RNFS = require('react-native-fs');
 
 class Login extends React.Component {
     constructor(props) {
@@ -17,6 +18,46 @@ class Login extends React.Component {
     }
     static defaultProps = {
         formType: FORM_TYPE.Login
+    }
+    componentDidMount() {
+        if (this.props.isLoginSuccess) {
+            this.saveUserDetail();
+        }
+    }
+    shouldComponentUpdate(nextProps, nextState) {
+        if (nextProps.isLoginSuccess) {
+            this.saveUserDetail(nextProps);
+            return false;
+        }
+        return true;
+    }
+    async saveUserDetail(nextProps) {
+        console.log("save user detail====");
+        if (nextProps) {
+            const user = nextProps.saveUserInfo.registeredEmail.split("@")[0];
+
+            // create a path you want to write to
+            // :warning: on iOS, you cannot write into `RNFS.MainBundlePath`,
+            // but `RNFS.DocumentDirectoryPath` exists on both platforms and is writable
+            console.log("path====")
+            console.log(RNFS.DocumentDirectoryPath)
+            var path = RNFS.DocumentDirectoryPath + '/register.json';
+            //const path  = require('../../res/register.json');
+            var content = {
+                "user": user,
+                "registeredNumber": nextProps.saveUserInfo.mobileNumber,
+                "registeredEmail": nextProps.saveUserInfo.registeredEail
+            }
+            // write the file
+            RNFS.writeFile(path, JSON.stringify(content), 'utf8')
+                .then((success) => {
+                    console.log('File has been saved.');
+                    this.props.loginSuccess();
+                })
+                .catch((err) => {
+                    console.log(err.message);
+                });
+        }
     }
     render() {
         return (
@@ -59,17 +100,19 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
     return {
-        isAuthenticated: state.auth.isAuthenticated,
-        isLoginRegister: state.auth.isLoginRegister,
-        formType: state.auth.formType
+        saveUserInfo: state.auth.saveUserInfo,
+        isLoginSuccess: state.auth.isLoginSuccess
     }
 };
 
-const mapDispatchToProps = (dispatch) =>{
+const mapDispatchToProps = (dispatch) => {
     return {
         changeToRegistrationState: (formType) => {
-            dispatch(loginRegister({ formType: formType, isAuthenticated: false, isLoginRegister: true}))
+            dispatch(loginRegister({ formType: formType, isAuthenticated: false, isLoginRegister: true }))
+        },
+        loginSuccess: (formType) => {
+            dispatch(loginSuccess({ isAuthenticated: true }))
         }
     }
 }
-export default connect(null, mapDispatchToProps)(Login)
+export default connect(mapStateToProps, mapDispatchToProps)(Login)
