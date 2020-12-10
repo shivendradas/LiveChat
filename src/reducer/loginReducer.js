@@ -4,7 +4,7 @@ const initialState = {
     isLoginRegister: false,
     isLoginSuccess: false,
     formType: FORM_TYPE.Login,
-    userName: null,
+    userName: "",
     registeredEmail: "",
     password: "",
     confirmPassword: "",

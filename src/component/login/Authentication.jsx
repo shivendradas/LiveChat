@@ -58,7 +58,8 @@ class Authentication extends React.Component {
 const mapStateToProps = (state) => {
     return {
         isAuthenticated: state.auth.isAuthenticated,
-        isLoginRegister: state.auth.isLoginRegister
+        isLoginRegister: state.auth.isLoginRegister,
+        userName: state.auth.userName
     }
 };
 const mapDispatchToProps = (dispatch) => {
