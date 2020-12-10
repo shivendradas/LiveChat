@@ -25,6 +25,7 @@ MaterialCommunityIcons
 import HomeTab from './HomeTab';
 import ChatTab from './ChatTab';
 import EventTab from './EventTab';
+import { connect } from 'react-redux';
 
 const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
@@ -94,7 +95,7 @@ function TabStack() {
     );
 }
 
-function MainTab() {
+function MainTab(props) {
     return (
         <NavigationContainer>
             <Stack.Navigator
@@ -107,11 +108,15 @@ function MainTab() {
                 <Stack.Screen
                     name="TabStack"
                     component={TabStack}
-                    options={{ title: 'Shivendra Das' }}
+                    options={{ title: props.userName }}
                 />
             </Stack.Navigator>
         </NavigationContainer>
     );
 }
-
-export default MainTab;
+const mapStateToProps = (state) => {
+    return {
+        userName: state.auth.userName
+    }
+};
+export default connect(mapStateToProps, null)(MainTab);

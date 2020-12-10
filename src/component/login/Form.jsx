@@ -26,8 +26,6 @@ class Form extends Component {
         this.getMobileNumber();
     }
     UNSAFE_componentWillUpdate(nextProps, nextState) {
-        console.log("will update===")
-        console.log(this.props)
         console.log(nextProps)
         if (this.props.dob != nextProps.dob) {
             this.isDatepickerVisible = false;
@@ -83,8 +81,6 @@ class Form extends Component {
     showDatePick() {
         this.isDatepickerVisible = true
         this.props.setDatepickerVisible(this.isDatepickerVisible);
-        console.log("isdatepicker visible==")
-        console.log(this.props.isDatepickerVisible)
     }
 
     /**

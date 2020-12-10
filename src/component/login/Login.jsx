@@ -19,11 +19,6 @@ class Login extends React.Component {
     static defaultProps = {
         formType: FORM_TYPE.Login
     }
-    componentDidMount() {
-        if (this.props.isLoginSuccess) {
-            this.saveUserDetail();
-        }
-    }
     shouldComponentUpdate(nextProps, nextState) {
         if (nextProps.isLoginSuccess) {
             this.saveUserDetail(nextProps);
@@ -32,15 +27,12 @@ class Login extends React.Component {
         return true;
     }
     async saveUserDetail(nextProps) {
-        console.log("save user detail====");
         if (nextProps) {
             const user = nextProps.saveUserInfo.registeredEmail.split("@")[0];
 
             // create a path you want to write to
             // :warning: on iOS, you cannot write into `RNFS.MainBundlePath`,
             // but `RNFS.DocumentDirectoryPath` exists on both platforms and is writable
-            console.log("path====")
-            console.log(RNFS.DocumentDirectoryPath)
             var path = RNFS.DocumentDirectoryPath + '/register.json';
             //const path  = require('../../res/register.json');
             var content = {
