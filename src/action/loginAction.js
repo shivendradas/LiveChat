@@ -1,6 +1,6 @@
 import {
     LOGIN, SAVE_USER_INFO, LOGIN_REGISTER, LOGIN_SUCCESS, SET_EMAIL, SET_PASSWORD, SET_CONFIRM_PASSWORD,
-    UPDATE_MOBILE_NUMBER, LOGIN_ERROR, FORM_TYPE, CLEAR_LOGIN_ERROR, SET_DOB
+    UPDATE_MOBILE_NUMBER, LOGIN_ERROR, FORM_TYPE, CLEAR_LOGIN_ERROR, SET_DOB, LOGIN_LOADING_ICON
 } from '../constant/loginTypes'
 import { LOGIN_URL, LOGIN_REGISER_URL } from '../constant/serviceUrls';
 import loginReducer from '../reducer/loginReducer';
@@ -123,5 +123,12 @@ export const setConfirmPassword = (password) => {
 export const clearLoginError = () => {
     return {
         type: CLEAR_LOGIN_ERROR
+    }
+}
+
+export const setLoginLoadingIcon = (isLoaded) => {
+    return {
+        type: LOGIN_LOADING_ICON,
+        isLoaded
     }
 }

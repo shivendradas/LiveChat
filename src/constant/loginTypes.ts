@@ -4,6 +4,7 @@ export const LOGIN = 'LOGIN';
 export const LOGIN_REGISTER = 'LOGIN_REGISTER'
 export const LOGIN_ERROR = 'LOGIN_ERROR';
 export const CLEAR_LOGIN_ERROR = 'CLEAR_LOGIN_ERROR';
+export const LOGIN_LOADING_ICON = 'LOGIN_LOADING_ICON';
 export const LOGIN_INITIALIZE = 'LOGIN_INITIALIZE';
 export const FORM_TYPE =  {Login: 'Login', Registration: 'Registration'};
 export const UPDATE_MOBILE_NUMBER = 'UPDATE_MOBILE_NUMBER';

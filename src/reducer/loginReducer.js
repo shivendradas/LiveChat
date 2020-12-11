@@ -1,4 +1,4 @@
-import { SAVE_USER_INFO, LOGIN_REGISTER, LOGIN_SUCCESS, LOGIN, FORM_TYPE, UPDATE_MOBILE_NUMBER, SET_PASSWORD, SET_EMAIL, SET_DOB, SET_CONFIRM_PASSWORD, LOGIN_ERROR, CLEAR_LOGIN_ERROR } from '../constant/loginTypes'
+import { SAVE_USER_INFO, LOGIN_REGISTER, LOGIN_SUCCESS, LOGIN, FORM_TYPE, UPDATE_MOBILE_NUMBER, SET_PASSWORD, SET_EMAIL, SET_DOB, SET_CONFIRM_PASSWORD, LOGIN_ERROR, CLEAR_LOGIN_ERROR, LOGIN_LOADING_ICON } from '../constant/loginTypes'
 const initialState = {
     isAuthenticated: false,
     isLoginRegister: false,
@@ -9,7 +9,8 @@ const initialState = {
     password: "",
     confirmPassword: "",
     mobileNumber: 0,
-    loginError:"",
+    loginError: "",
+    isLoginLoadingIcon: true,
     saveUserInfo: {},
     dob: new Date(),
 };
@@ -19,6 +20,7 @@ const loginReducer = (state = initialState, action) => {
         case LOGIN_SUCCESS:
             return Object.assign({}, state, {
                 isAuthenticated: action.loginDetail.isAuthenticated,
+                isLoginLoadingIcon: action.loginDetail.isLoginLoadingIcon,
                 userName: action.loginDetail.userName,
             });
 
@@ -47,26 +49,31 @@ const loginReducer = (state = initialState, action) => {
             return Object.assign({}, state, {
                 dob: action.dob
             });
-        case SET_PASSWORD:            
+        case SET_PASSWORD:
             return Object.assign({}, state,
-            {
-                password: action.password
-            });
+                {
+                    password: action.password
+                });
         case SET_CONFIRM_PASSWORD:
             return Object.assign({}, state,
-            {
-                confirmPassword: action.password
-            });
+                {
+                    confirmPassword: action.password
+                });
         case LOGIN_ERROR:
             return Object.assign({}, state,
-            {
-                loginError: action.response
-            });
+                {
+                    loginError: action.response
+                });
         case CLEAR_LOGIN_ERROR:
             return Object.assign({}, state,
-            {
-                loginError: ""
-            });
+                {
+                    loginError: ""
+                });
+        case LOGIN_LOADING_ICON:
+            return Object.assign({}, state,
+                {
+                    isLoginLoadingIcon: action.isLoginLoadingIcon
+                });
 
         default:
             return state;
