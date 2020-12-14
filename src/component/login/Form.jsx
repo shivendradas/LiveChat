@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { connect } from 'react-redux'
-import RNSimData from 'react-native-sim-data'
+import RNSimData from 'react-native-sim-data';
 
 import {
     StyleSheet,
     Text,
     View,
     TextInput,
-    TouchableOpacity,
-    PermissionsAndroid
+    TouchableOpacity
 } from 'react-native';
 import { updateMobileNumber, login, userRegister, setEmail, setPassword, setDOB, setConfirmPassword, clearLoginError } from '../../action/loginAction';
 import { setDatepickerVisible } from "../../action/datePickerAction"
@@ -19,7 +18,7 @@ import CustomDatePicker from '../datepicker/CustomDatePicker';
 class Form extends Component {
     isDatepickerVisible = false;
     constructor(props) {
-        super(props)
+        super(props);
     }
 
     componentDidMount() {
@@ -33,14 +32,10 @@ class Form extends Component {
 
     }
     async getMobileNumber() {
-        const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_PHONE_STATE)
-        if (granted == PermissionsAndroid.RESULTS.GRANTED) {
-            const detail = RNSimData.getSimInfo();
-            if (detail) {
-                this.props.updateMobileNumber(detail.phoneNumber0);
-            }
+        const detail = await RNSimData.getSimInfo();
+        if (detail) {
+            this.props.updateMobileNumber(detail.phoneNumber0);
         }
-
     }
     confirmPassword() {
         if (this.props.type == FORM_TYPE.Registration) {
@@ -176,7 +171,7 @@ class Form extends Component {
                 />
                 {this.confirmPassword()}
                 {this.showDatePickerButton()}
-                {this.isDatepickerVisible && (<CustomDatePicker onSelectDate={this.onSelectDate.bind(this)} selectedDate={this.props.dob}/>)}
+                {this.isDatepickerVisible && (<CustomDatePicker onSelectDate={this.onSelectDate.bind(this)} selectedDate={this.props.dob} />)}
                 <TouchableOpacity style={styles.button} onPress={async () => { await this.onSubmit() }}>
                     <Text style={styles.buttonText}>{this.props.type}</Text>
                 </TouchableOpacity>

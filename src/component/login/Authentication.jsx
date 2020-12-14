@@ -5,13 +5,14 @@ import MainTab from '../tab/MainTab';
 import Login from './Login';
 import LoginLogo from './LoginLogo';
 import LoginRegister from './LoginRegister';
+import { PERMISSIONS, check, request, RESULTS } from 'react-native-permissions'
 var RNFS = require('react-native-fs');
 class Authentication extends React.Component {
     constructor(props) {
         super(props);
         this.checkAuthentication();
     }
-    
+
     async checkAuthentication() {
         //const file  = require('../../res/register.json');
         var path = RNFS.DocumentDirectoryPath + '/register.json';
@@ -28,6 +29,7 @@ class Authentication extends React.Component {
                     })
             } else {
                 console.log("File does not exist");
+                const grantStatus = await this.checkPermission();
                 this.props.changeLoadingIconState(false, false);
             }
         } catch (err) {
@@ -38,6 +40,18 @@ class Authentication extends React.Component {
             this.props.changeAuthenticationState(true, false, file.user);
         } else {
             this.props.changeLoadingIconState(false, false);
+        }
+    }
+    async checkPermission() {
+        try {
+            var res = await check(PERMISSIONS.ANDROID.READ_PHONE_STATE);
+            if (res == RESULTS.DENIED) {
+                res = await request(PERMISSIONS.ANDROID.READ_PHONE_STATE);
+            }
+            return res;
+        } catch (error) {
+            console.log(error)
+            return false;
         }
     }
     render() {
