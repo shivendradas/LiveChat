@@ -49,6 +49,9 @@ function TabStack() {
                     borderBottomWidth: 2,
                 }
             }}>
+            {
+                //For this home tab is hidden
+             /*   
             <Tab.Screen
 
                 name="HomeTab"
@@ -63,8 +66,9 @@ function TabStack() {
                     //   />
                     // ),
                 }} />
+                */
+            }
             <Tab.Screen
-
                 name="ChatTab"
                 component={ChatTab}
                 options={{
