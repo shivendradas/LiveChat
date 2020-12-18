@@ -12,6 +12,7 @@ import {
     NavigationContainer
 } from '@react-navigation/native';
 import {
+    CardStyleInterpolators,
     createStackNavigator
 } from '@react-navigation/stack';
 import {
@@ -26,6 +27,7 @@ import HomeTab from './HomeTab';
 import ChatTab from './ChatTab';
 import EventTab from './EventTab';
 import { connect } from 'react-redux';
+import SearchContact from '../ContactDetail/SearchContact';
 
 const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
@@ -51,22 +53,22 @@ function TabStack() {
             }}>
             {
                 //For this home tab is hidden
-             /*   
-            <Tab.Screen
-
-                name="HomeTab"
-                component={HomeTab}
-                options={{
-                    tabBarLabel: 'Home',
-                    // tabBarIcon: ({ color, size }) => (
-                    //   <MaterialCommunityIcons
-                    //     name="home"
-                    //     color={color}
-                    //     size={size}
-                    //   />
-                    // ),
-                }} />
-                */
+                /*   
+               <Tab.Screen
+   
+                   name="HomeTab"
+                   component={HomeTab}
+                   options={{
+                       tabBarLabel: 'Home',
+                       // tabBarIcon: ({ color, size }) => (
+                       //   <MaterialCommunityIcons
+                       //     name="home"
+                       //     color={color}
+                       //     size={size}
+                       //   />
+                       // ),
+                   }} />
+                   */
             }
             <Tab.Screen
                 name="ChatTab"
@@ -107,6 +109,7 @@ function MainTab(props) {
                 screenOptions={{
                     headerStyle: { backgroundColor: '#633689' },
                     headerTintColor: '#fff',
+                    cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
                     headerTitleStyle: { fontWeight: 'bold' }
                 }}>
                 <Stack.Screen
@@ -114,6 +117,7 @@ function MainTab(props) {
                     component={TabStack}
                     options={{ title: props.userName }}
                 />
+                <Stack.Screen name="SearchContact" component={SearchContact} />
             </Stack.Navigator>
         </NavigationContainer>
     );

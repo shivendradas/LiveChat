@@ -4,7 +4,7 @@ import Contacts from 'react-native-contacts';
 //import { Icon } from 'react-native-elements'
 import { PERMISSIONS, check, request, RESULTS } from 'react-native-permissions'
 
-class ContactList extends Component {
+class SearchContact extends Component {
     constructor(props) {
         super(props);
     }
@@ -13,7 +13,8 @@ class ContactList extends Component {
             var res = await check(PERMISSIONS.ANDROID.READ_CONTACTS);
             if (res == RESULTS.DENIED) {
                 res = await request(PERMISSIONS.ANDROID.READ_CONTACTS);
-            } 
+            }
+
         } catch (error) {
             console.error(error)
         }
@@ -22,9 +23,7 @@ class ContactList extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <TouchableOpacity style={styles.touchableOpacityStyle}  onPress={async () => { await this.getContactListPermission() }}> 
-                    <Text style = {styles.floatingButtonStyle}>+</Text>
-                </TouchableOpacity>
+                <Text>Search contacts</Text>
             </View>
         )
     }
@@ -54,7 +53,7 @@ const styles = StyleSheet.create({
     },
 
     floatingButtonStyle: {
-        fontSize:30
+        fontSize: 30
     }
 });
-export default ContactList;
+export default SearchContact;

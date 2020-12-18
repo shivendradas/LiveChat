@@ -7,7 +7,7 @@ import {
   Text,
   SafeAreaView
 } from 'react-native';
-import ContactList from '../ContactDetail/ContactList';
+import SelectedContact from '../ContactDetail/SelectedContact';
 
 const styles = StyleSheet.create({
   button: {
@@ -23,7 +23,7 @@ class ChatTab extends React.Component {
   render() {
     return (
       <SafeAreaView style={{ flex: 1 }}>
-        <ContactList></ContactList>
+        <SelectedContact navigation={this.props.navigation}></SelectedContact>
       </SafeAreaView>
     );
   }
