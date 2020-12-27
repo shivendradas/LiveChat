@@ -1,59 +1,141 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { connect } from 'react-redux';
+import {
+    View, Text, TouchableOpacity, StyleSheet, Platform,
+    SafeAreaView, FlatList, TextInput
+} from 'react-native';
 import Contacts from 'react-native-contacts';
-//import { Icon } from 'react-native-elements'
-import { PERMISSIONS, check, request, RESULTS } from 'react-native-permissions'
+import ListItem from './ListItem';
+import { listContacts } from '../../action/contactDetailAction';
 
 class SearchContact extends Component {
     constructor(props) {
         super(props);
+        this.getAllContacts();
+        //this.loadContacts();
     }
-    async getContactListPermission() {
-        try {
-            var res = await check(PERMISSIONS.ANDROID.READ_CONTACTS);
-            if (res == RESULTS.DENIED) {
-                res = await request(PERMISSIONS.ANDROID.READ_CONTACTS);
-            }
 
-        } catch (error) {
-            console.error(error)
+    async getAllContacts() {
+        Contacts.getAll().then(contacts => {
+            contacts.sort(
+                (a, b) =>
+                    a.givenName.toLowerCase() > b.givenName.toLowerCase(),
+            );
+            let someRecord = contacts[0];
+            this.props.listContacts(contacts);
+            console.log("contacts");
+            console.log(someRecord)
+            console.log(contacts)
+        })
+    }
+    async loadContacts() {
+        Contacts.getAll().then(err, contacts => {
+            contacts.sort(
+                (a, b) =>
+                    a.givenName.toLowerCase() > b.givenName.toLowerCase(),
+            );
+            console.log('contacts -> ', contacts);
+            if (err && err === 'denied') {
+                alert('Permission to access contacts was denied');
+                console.warn('Permission to access contacts was denied');
+            } else {
+                this.props.listContacts(contacts);
+                console.log('contacts', contacts);
+            }
+        });
+    };
+
+    search = (text) => {
+        const phoneNumberRegex =
+            /\b[\+]?[(]?[0-9]{2,6}[)]?[-\s\.]?[-\s\/\.0-9]{3,15}\b/m;
+        if (text === '' || text === null) {
+            //loadContacts();
+            this.getAllContacts();
+        } else if (phoneNumberRegex.test(text)) {
+            Contacts.getContactsByPhoneNumber(text).then(contacts => {
+                /*contacts.sort(
+                    (a, b) =>
+                        a.givenName.toLowerCase() > b.givenName.toLowerCase(),
+                );*/
+                this.props.listContacts(contacts);
+                console.log('contacts', contacts);
+            });
+        } else {
+            Contacts.getContactsMatchingString(text).then(contacts => {
+                /*contacts.sort(
+                    (a, b) =>
+                        a.givenName.toLowerCase() > b.givenName.toLowerCase(),
+                );*/
+                this.props.listContacts(contacts);
+                console.log('contacts', contacts);
+            });
         }
     }
 
+    openContact = (contact) => {
+        console.log(JSON.stringify(contact));
+        Contacts.openExistingContact(contact, () => { });
+    };
+
     render() {
         return (
-            <View style={styles.container}>
-                <Text>Search contacts</Text>
-            </View>
+            <SafeAreaView style={styles.container}>
+                <View style={styles.container}>
+                    <TextInput
+                        onChangeText={this.search}
+                        placeholder="Search"
+                        style={styles.searchBar}
+                    />
+                    <FlatList
+                        data={this.props.contacts}
+                        renderItem={(contact) => {
+                            {
+                                console.log('contact -> ' + JSON.stringify(contact));
+                            }
+                            return (
+                                <ListItem
+                                    key={contact.item.recordID}
+                                    item={contact.item}
+                                    onPress={this.openContact}
+                                />
+                            );
+                        }}
+                        keyExtractor={(item) => item.recordID}
+                    />
+                </View>
+            </SafeAreaView>
         )
     }
 
 }
 const styles = StyleSheet.create({
-
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#F5F5F5'
     },
-
-    touchableOpacityStyle: {
-        borderWidth: 1,
-        borderColor: 'rgba(0,0,0,0.2)',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: 50,
-        position: 'absolute',
-        bottom: 10,
-        right: 10,
-        height: 50,
-        backgroundColor: '#fff',
-        borderRadius: 100
+    header: {
+        backgroundColor: '#4591ed',
+        color: 'white',
+        paddingHorizontal: 15,
+        paddingVertical: 15,
+        fontSize: 20,
     },
-
-    floatingButtonStyle: {
-        fontSize: 30
-    }
+    searchBar: {
+        backgroundColor: '#f0eded',
+        paddingHorizontal: 30,
+        paddingVertical: Platform.OS === 'android' ? undefined : 15,
+    },
 });
-export default SearchContact;
+const mapStateToProps = (state) => {
+    return {
+        contacts: state.contactDetail.contacts
+    }
+};
+const mapDispatchToProps = (dispatch) => {
+    return {
+        listContacts: (contacts) => {
+            dispatch(listContacts(contacts))
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SearchContact);
