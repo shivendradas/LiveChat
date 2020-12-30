@@ -14,7 +14,7 @@ class SelectedContact extends Component {
             if (res == RESULTS.DENIED) {
                 res = await request(PERMISSIONS.ANDROID.READ_CONTACTS);
             } else if (res == RESULTS.GRANTED) {
-                this.props.navigation.navigate('SearchContact')
+                this.props.navigation.navigate('SearchContact',{ name: 'Search Contacts' })
             }
             
         } catch (error) {

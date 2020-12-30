@@ -13,7 +13,7 @@ import {
 } from '@react-navigation/native';
 import {
     CardStyleInterpolators,
-    createStackNavigator
+    createStackNavigator, HeaderBackButton
 } from '@react-navigation/stack';
 import {
     createMaterialBottomTabNavigator
@@ -28,6 +28,8 @@ import ChatTab from './ChatTab';
 import EventTab from './EventTab';
 import { connect } from 'react-redux';
 import SearchContact from '../ContactDetail/SearchContact';
+import ChatConversation from '../chat/ChatCoversation';
+import SelectedContact from '../ContactDetail/SelectedContact';
 
 const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
@@ -117,7 +119,22 @@ function MainTab(props) {
                     component={TabStack}
                     options={{ title: props.userName }}
                 />
-                <Stack.Screen name="SearchContact" component={SearchContact} />
+                <Stack.Screen name="SelectedContact" component={SelectedContact}
+                    options={({ route }) => ({ title: props.userName })}
+                />
+                <Stack.Screen name="SearchContact" component={SearchContact}
+                    options={({ route }) => ({ title: route.params.name })}
+                />
+                <Stack.Screen name="Chat" component={ChatConversation}
+                    options={({ navigation, route }) => ({
+                        title: route.params.name, headerLeft: (props) => (
+                            <HeaderBackButton
+                                {...props}
+                                onPress={() => navigation.navigate('SelectedContact',{ })}
+                            />
+                        )
+                    })}
+                />
             </Stack.Navigator>
         </NavigationContainer>
     );

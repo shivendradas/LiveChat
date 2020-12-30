@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
-import { NativeModules, PermissionsAndroid } from 'react-native';
 import {
-  TouchableOpacity,
   StyleSheet,
-  View,
-  Text,
   SafeAreaView
 } from 'react-native';
 import SelectedContact from '../ContactDetail/SelectedContact';

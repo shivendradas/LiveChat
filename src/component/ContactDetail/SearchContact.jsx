@@ -21,11 +21,7 @@ class SearchContact extends Component {
                 (a, b) =>
                     a.givenName.toLowerCase() > b.givenName.toLowerCase(),
             );
-            let someRecord = contacts[0];
             this.props.listContacts(contacts);
-            console.log("contacts");
-            console.log(someRecord)
-            console.log(contacts)
         })
     }
     async loadContacts() {
@@ -77,6 +73,9 @@ class SearchContact extends Component {
         Contacts.openExistingContact(contact, () => { });
     };
 
+    startChat = (contact) => {
+        this.props.navigation.navigate('Chat', { name: contact.displayName });
+    }
     render() {
         return (
             <SafeAreaView style={styles.container}>
@@ -96,7 +95,7 @@ class SearchContact extends Component {
                                 <ListItem
                                     key={contact.item.recordID}
                                     item={contact.item}
-                                    onPress={this.openContact}
+                                    onPress={this.startChat}
                                 />
                             );
                         }}
