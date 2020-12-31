@@ -1,11 +1,5 @@
 import React, { Component } from 'react';
-import {
-  TouchableOpacity,
-  StyleSheet,
-  View,
-  Text,
-  SafeAreaView
-} from 'react-native';
+import { View, Text, SafeAreaView } from 'react-native';
 export default class HomeTab extends React.Component {
   render() {
     return (

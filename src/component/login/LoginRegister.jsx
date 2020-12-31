@@ -1,17 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {
-    ScrollView,
-    Text,
-    StyleSheet,
-    TextInput,
-    View,
-    TouchableOpacity
-} from 'react-native';
+import { Text, View, TouchableOpacity } from 'react-native';
 import LoginLogo from './LoginLogo';
 import Form from './Form';
 import { loginRegister } from '../../action/loginAction';
 import { FORM_TYPE } from '../../constant/loginTypes';
+import styles from '../../styles/styles.js';
 
 class LoginRegister extends Component {
     constructor(props) {
@@ -35,30 +29,6 @@ class LoginRegister extends Component {
         )
     }
 }
-const styles = StyleSheet.create({
-    container: {
-        backgroundColor: '#455a64',
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    signupTextCont: {
-        flexGrow: 1,
-        alignItems: 'flex-end',
-        justifyContent: 'center',
-        paddingVertical: 16,
-        flexDirection: 'row'
-    },
-    signupText: {
-        color: 'rgba(255,255,255,0.6)',
-        fontSize: 16
-    },
-    signupButton: {
-        color: '#ffffff',
-        fontSize: 16,
-        fontWeight: '500'
-    }
-});
 const mapDispatchToProps = (dispatch) => {
     return {
         changeToLoginState: (formType) => {

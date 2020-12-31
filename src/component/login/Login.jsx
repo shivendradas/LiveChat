@@ -1,15 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {
-    Text,
-    StyleSheet,
-    View,
-    TouchableOpacity
-} from 'react-native';
+import { Text, View, TouchableOpacity } from 'react-native';
 import LoginLogo from './LoginLogo';
 import Form from './Form';
 import { loginRegister, loginSuccess } from '../../action/loginAction';
 import { FORM_TYPE } from '../../constant/loginTypes';
+import styles from '../../styles/styles.js';
+
 var RNFS = require('react-native-fs');
 
 class Login extends React.Component {
@@ -65,31 +62,6 @@ class Login extends React.Component {
         )
     }
 }
-const styles = StyleSheet.create({
-    container: {
-        backgroundColor: '#455a64',
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    signupTextCont: {
-        flexGrow: 1,
-        alignItems: 'flex-end',
-        justifyContent: 'center',
-        paddingVertical: 16,
-        flexDirection: 'row'
-    },
-    signupText: {
-        color: 'rgba(255,255,255,0.6)',
-        fontSize: 16
-    },
-    signupButton: {
-        color: '#ffffff',
-        fontSize: 16,
-        fontWeight: '500'
-    }
-});
-
 const mapStateToProps = (state) => {
     return {
         saveUserInfo: state.auth.saveUserInfo,

@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image } from 'react-native';
+import styles from '../../styles/styles.js';
 class LoginLogo extends Component {
 
     render() {
         return (
-            <View style={styles.container}>
+            <View style={styles.logoContainer}>
                 <Image source={require('../../res/images/logo.png')} />
                 <Text style={styles.logoText}>
                     Welcome to Live Chat App
@@ -13,7 +14,7 @@ class LoginLogo extends Component {
         )
     }
 }
-const styles = StyleSheet.create({
+/*const styles = StyleSheet.create({
     container: {
         flexGrow: 1,
         justifyContent: 'flex-end',
@@ -24,5 +25,5 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: 'rgba(255, 255, 255, 0.7)'
     }
-});
+});*/
 export default LoginLogo

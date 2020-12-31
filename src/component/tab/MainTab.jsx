@@ -119,9 +119,6 @@ function MainTab(props) {
                     component={TabStack}
                     options={{ title: props.userName }}
                 />
-                <Stack.Screen name="SelectedContact" component={SelectedContact}
-                    options={({ route }) => ({ title: props.userName })}
-                />
                 <Stack.Screen name="SearchContact" component={SearchContact}
                     options={({ route }) => ({ title: route.params.name })}
                 />
@@ -130,7 +127,7 @@ function MainTab(props) {
                         title: route.params.name, headerLeft: (props) => (
                             <HeaderBackButton
                                 {...props}
-                                onPress={() => navigation.navigate('SelectedContact',{ })}
+                                onPress={() => navigation.navigate('TabStack',{ })}
                             />
                         )
                     })}
