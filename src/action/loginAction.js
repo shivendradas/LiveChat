@@ -33,6 +33,7 @@ export const login = (userDetail) => {
             const jsonResonse = await userData.json();
             if (jsonResonse.error) {
                 await dispatch(registerResponse(jsonResonse));
+                dispatch(clearLoginError());
             } else {
                 dispatch(clearLoginError());
                 dispatch(setUserDetail({ userDetail, isLoginSuccess: true }));

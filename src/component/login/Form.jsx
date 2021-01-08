@@ -130,7 +130,7 @@ class Form extends Component {
     showError() {
         if (this.props.loginError != "") {
             const errorMsg = this.props.loginError;
-            console.error(errorMsg)
+            console.error(errorMsg);
         }
     }
     async onSelectDate(dob) {
