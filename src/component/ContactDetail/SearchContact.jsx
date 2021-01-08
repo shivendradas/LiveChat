@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
-    View, Text, TouchableOpacity, StyleSheet, Platform,
-    SafeAreaView, FlatList, TextInput
+    View, SafeAreaView, FlatList, TextInput
 } from 'react-native';
 import Contacts from 'react-native-contacts';
 import ListItem from './ListItem';
 import { listContacts } from '../../action/contactDetailAction';
+import styles from '../../styles/styles.js';
 
 class SearchContact extends Component {
     constructor(props) {
@@ -78,8 +78,8 @@ class SearchContact extends Component {
     }
     render() {
         return (
-            <SafeAreaView style={styles.container}>
-                <View style={styles.container}>
+            <SafeAreaView style={styles.safeAreaContainer}>
+                <View>
                     <TextInput
                         onChangeText={this.search}
                         placeholder="Search"
@@ -107,23 +107,6 @@ class SearchContact extends Component {
     }
 
 }
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-    header: {
-        backgroundColor: '#4591ed',
-        color: 'white',
-        paddingHorizontal: 15,
-        paddingVertical: 15,
-        fontSize: 20,
-    },
-    searchBar: {
-        backgroundColor: '#f0eded',
-        paddingHorizontal: 30,
-        paddingVertical: Platform.OS === 'android' ? undefined : 15,
-    },
-});
 const mapStateToProps = (state) => {
     return {
         contacts: state.contactDetail.contacts

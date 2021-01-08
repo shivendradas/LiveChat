@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 //import { Icon } from 'react-native-elements'
 import { PERMISSIONS, check, request, RESULTS } from 'react-native-permissions'
+import styles from '../../styles/styles.js';
 
 
 class SelectedContact extends Component {
@@ -25,7 +26,7 @@ class SelectedContact extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <TouchableOpacity style={styles.touchableOpacityStyle}  onPress={async () => { await this.getContactListPermission() }}> 
+                <TouchableOpacity style={styles.addBtnTouchableOpacityStyle}  onPress={async () => { await this.getContactListPermission() }}> 
                     <Text style = {styles.floatingButtonStyle}>+</Text>
                 </TouchableOpacity>
             </View>
@@ -33,31 +34,4 @@ class SelectedContact extends Component {
     }
 
 }
-const styles = StyleSheet.create({
-
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#F5F5F5'
-    },
-
-    touchableOpacityStyle: {
-        borderWidth: 1,
-        borderColor: 'rgba(0,0,0,0.2)',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: 50,
-        position: 'absolute',
-        bottom: 10,
-        right: 10,
-        height: 50,
-        backgroundColor: '#fff',
-        borderRadius: 100
-    },
-
-    floatingButtonStyle: {
-        fontSize:30
-    }
-});
 export default SelectedContact;

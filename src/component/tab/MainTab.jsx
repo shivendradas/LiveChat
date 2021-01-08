@@ -39,20 +39,10 @@ function TabStack() {
         //By default shifting value is true, so if tab is more than 3 than label hide
         <Tab.Navigator shifting={false}
             initialRouteName="ChatTab"
-            tabBarOptions={{
-                activeTintColor: '#FFFFFF',
-                inactiveTintColor: '#F8F8F8',
-                style: {
-                    backgroundColor: '#633689',
-                },
-                labelStyle: {
-                    textAlign: 'center',
-                },
-                indicatorStyle: {
-                    borderBottomColor: '#87B56A',
-                    borderBottomWidth: 2,
-                }
-            }}>
+            activeColor="#FFFFFF"
+            inactiveColor="#a1b0b8"
+            barStyle={{ backgroundColor: '#0e6089' }}
+            >
             {
                 //For this home tab is hidden
                 /*   
@@ -77,6 +67,7 @@ function TabStack() {
                 component={ChatTab}
                 options={{
                     tabBarLabel: 'Chat',
+                    tabBarColor: '#0e6089',
                     // tabBarIcon: ({ color, size }) => (
                     //   <MaterialCommunityIcons
                     //       name="home"
@@ -91,6 +82,7 @@ function TabStack() {
                 component={EventTab}
                 options={{
                     tabBarLabel: 'Event',
+                    tabBarColor: '#0e6089',
                     // tabBarIcon: ({ color, size }) => (
                     //   <MaterialCommunityIcons
                     //       name="Event"
@@ -109,10 +101,10 @@ function MainTab(props) {
             <Stack.Navigator
                 initialRouteName="ChatTab"
                 screenOptions={{
-                    headerStyle: { backgroundColor: '#633689' },
+                    headerStyle: { backgroundColor: '#043c58' },
                     headerTintColor: '#fff',
-                    cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-                    headerTitleStyle: { fontWeight: 'bold' }
+                    headerTitleStyle: { fontWeight: 'bold' },
+                    cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
                 }}>
                 <Stack.Screen
                     name="TabStack"

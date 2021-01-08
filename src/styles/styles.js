@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
     container: {
-        backgroundColor: '#455a64',
+        backgroundColor: '#ddeff9',
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center'
@@ -11,9 +11,13 @@ export default StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
+    safeAreaContainer: {
+        backgroundColor: '#ddeff9',
+        flex: 1
+    },
     inputBox: {
         width: 300,
-        backgroundColor: 'rgba(255, 255,255,0.2)',
+        backgroundColor: '#61a5c7',
         borderRadius: 25,
         paddingHorizontal: 16,
         fontSize: 16,
@@ -22,7 +26,7 @@ export default StyleSheet.create({
     },
     button: {
         width: 300,
-        backgroundColor: '#1c313a',
+        backgroundColor: '#043c58',
         borderRadius: 25,
         marginVertical: 10,
         paddingVertical: 13
@@ -40,11 +44,11 @@ export default StyleSheet.create({
         flexDirection: 'row'
     },
     signupText: {
-        color: 'rgba(255,255,255,0.6)',
+        color: '#043c58',
         fontSize: 16
     },
     signupButton: {
-        color: '#ffffff',
+        color: '#0e6089',
         fontSize: 16,
         fontWeight: '500'
     },
@@ -55,6 +59,33 @@ export default StyleSheet.create({
     logoText: {
         marginVertical: 15,
         fontSize: 18,
-        color: 'rgba(255, 255, 255, 0.7)'
+        color: '#043c58'
+    },
+    addBtnTouchableOpacityStyle: {
+        borderWidth: 1,
+        borderColor: 'rgba(0,0,0,0.2)',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: 50,
+        position: 'absolute',
+        bottom: 10,
+        right: 10,
+        height: 50,
+        backgroundColor: '#fff',
+        borderRadius: 100
+    },
+    floatingButtonStyle: {
+        fontSize:30
+    },header: {
+        backgroundColor: '#4591ed',
+        color: 'white',
+        paddingHorizontal: 15,
+        paddingVertical: 15,
+        fontSize: 20,
+    },
+    searchBar: {
+        backgroundColor: '#f0eded',
+        paddingHorizontal: 30,
+        paddingVertical: Platform.OS === 'android' ? undefined : 15,
     }
 });
