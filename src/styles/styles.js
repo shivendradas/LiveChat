@@ -76,7 +76,34 @@ export default StyleSheet.create({
     },
     floatingButtonStyle: {
         fontSize:30
-    },header: {
+    },
+    bottomContainer: {
+        position: 'absolute',
+        bottom: -10,
+        left: 1
+    },
+    bottomLeft: {
+        position: 'absolute',
+        bottom: 0,
+        left: 1
+    },
+    normalInputBox: {
+        width: 300,
+        backgroundColor: '#61a5c7',
+        paddingHorizontal: 16,
+        fontSize: 16,
+        color: '#ffffff',
+        marginVertical: 10
+    },
+    searchIcon: {
+        padding: 10,
+        margin: 5,
+        height: 50,
+        width: 50,
+        resizeMode: 'stretch',
+        alignItems: 'center',
+    },
+    header: {
         backgroundColor: '#4591ed',
         color: 'white',
         paddingHorizontal: 15,
