@@ -1,58 +1,49 @@
 import React, { Component } from 'react';
 import { View, Text, TextInput, Image, TouchableHighlight } from 'react-native';
+import { connect } from 'react-redux'
 import io from "socket.io-client";
 import SocketIOClient from 'socket.io-client';
+import { setTextMessage, setReceiverId } from '../../action/chatAction.js';
 import { CHAT_URL } from '../../constant/serviceUrls.js';
 //import { Icon } from 'react-native-paper/lib/typescript/src/components/Avatar/Avatar';
 import styles from '../../styles/styles.js';
 
 class ChatConversation extends Component {
-    socket;
     constructor(props) {
         super(props);
-        this.state = {
-            chatMessage: "",
-            chatMessages: []
-        };
     }
+
     componentDidMount() {
+        this.props.setReceiverId(this.props.route.params.contactNumber);
         this.socket = io(CHAT_URL);
-        //this.socket = SocketIOClient(CHAT_URL);
-        console.log("chat=="+CHAT_URL)
-        this.socket.on("chat_message", msg => {            
-            this.setState({
-                chatMessages: [...this.state.chatMessages, msg]
-            });
-            console.log("msg====")
-            console.log(this.state.chatMessages)
-        });
-        this.socket.emit('username', 'username1');
-        this.socket.on("new_user_joined", msg => {            
-            this.setState({
-                chatMessages: [...this.state.chatMessages, msg]
-            });
-        });
+        //this.socket = SocketIOClient(CHAT_URL); 
+        console.log(this.props)
+        console.log("chat==" + CHAT_URL)
+        this.socket.emit('username', this.props.senderId);
     }
     sendMessage = () => {
-        this.socket.emit('chat_message', this.state.chatMessage);
-        console.log(this.socket)
-        this.setState({ chatMessage: '' });
+        const message = {
+            'content': this.props.textMsg,
+            'senderChatID': this.props.senderId,
+            'receiverChatID': this.props.receiverId
+        }
+        this.socket.emit('send_message', message);
+        this.props.setTextMessage('');
     }
     submitChatMessage() {
-        this.socket.emit('chat_message', this.state.chatMessage);
-        this.setState({chatMessage: ''});
-      }
+        this.sendMessage();
+    }
     render() {
-        const chatMessages = this.state.chatMessages.map(chatMessage => (
+        /*const chatMessages = this.state.chatMessages.map(chatMessage => (
             <Text style={{ borderWidth: 2, top: 500 }} key={chatMessage}>{chatMessage}</Text>
         ));
-        console.log(this.state.chatMessage)
+        console.log(this.state.chatMessage)*/
         return (
             <View style={styles.container}>
-                <View style={{ ...styles.container}}>
-                {chatMessages}
-                </View>                 
-                <View style={{ ...styles.bottomContainer, flexDirection: 'row' }}>                   
+                <View style={{ ...styles.container }}>
+                    {/*chatMessages*/}
+                </View>
+                <View style={{ ...styles.bottomContainer, flexDirection: 'row' }}>
                     <View>
                         <TextInput
                             style={styles.normalInputBox}
@@ -60,11 +51,10 @@ class ChatConversation extends Component {
                             keyboardType='web-search'
                             ref='searchBar'
                             autoCorrect={false}
-                            value={this.state.chatMessage}
+                            value={this.props.textMsg}
                             onSubmitEditing={() => this.submitChatMessage()}
-                            onChangeText={chatMessage => {
-                                this.setState({ chatMessage });
-                            }}
+                            onChangeText={this.props.setTextMessage}
+
                         />
                     </View>
                     <TouchableHighlight style={{ alignItems: 'center', justifyContent: 'center' }} onPress={() => { this.sendMessage() }} underlayColor='transparent'>
@@ -79,4 +69,21 @@ class ChatConversation extends Component {
         )
     }
 }
-export default ChatConversation;
+const mapStateToProps = (state) => {
+    return {
+        senderId: state.chat.senderId,
+        receiverId: state.chat.receiverId,
+        textMsg: state.chat.textMsg
+    }
+};
+const mapDispatchToProps = (dispatch) => {
+    return {
+        setTextMessage: (message) => {
+            dispatch(setTextMessage(message))
+        },
+        setReceiverId: (receiverId) => {
+            dispatch(setReceiverId(receiverId))
+        }
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(ChatConversation);

@@ -74,7 +74,11 @@ class SearchContact extends Component {
     };
 
     startChat = (contact) => {
-        this.props.navigation.navigate('Chat', { name: contact.displayName });
+        var contactNumber = 0;
+        if(contact.phoneNumbers.length > 0){
+            contactNumber  = contact.phoneNumbers[0].number;
+        }
+        this.props.navigation.navigate('Chat', { name: contact.displayName, contactNumber: contactNumber });
     }
     render() {
         return (

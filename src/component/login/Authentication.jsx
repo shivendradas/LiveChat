@@ -6,6 +6,7 @@ import Login from './Login';
 import LoginLogo from './LoginLogo';
 import LoginRegister from './LoginRegister';
 import { PERMISSIONS, check, request, RESULTS } from 'react-native-permissions'
+import { setSenderId } from '../../action/chatAction';
 var RNFS = require('react-native-fs');
 class Authentication extends React.Component {
     constructor(props) {
@@ -23,6 +24,10 @@ class Authentication extends React.Component {
                     .then((data) => {
                         file_content = data;
                         console.log("got data: ", data);
+                        const jsonData = JSON.parse(data)
+                        if (jsonData && jsonData.registeredNumber) {
+                            this.props.setSenderId(jsonData.registeredNumber);
+                        }
                     })
                     .catch((e) => {
                         console.error("got error: ", e);
@@ -87,6 +92,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         changeLoadingIconState: (isAuthenticated, isLoginLoadingIcon) => {
             dispatch(setLoginLoadingIcon({ isAuthenticated: isAuthenticated, isLoginLoadingIcon: isLoginLoadingIcon }))
+        },
+        setSenderId: (senderId) => {
+            dispatch(setSenderId(senderId))
         }
     }
 }
