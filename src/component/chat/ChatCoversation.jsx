@@ -19,7 +19,7 @@ class ChatConversation extends Component {
         //this.socket = SocketIOClient(CHAT_URL); 
         console.log(this.props)
         console.log("chat==" + CHAT_URL)
-        this.socket.emit('username', this.props.senderId);
+        this.socket.emit('userId', this.props.senderId);
     }
     sendMessage = () => {
         const message = {
