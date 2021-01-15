@@ -3,7 +3,11 @@ import { RECEIVER_ID, SENDER_ID, TEXT_MSG } from "../constant/chatType";
 const initialState = {
     senderId: "",
     receiverId: "",
-    textMsg: ""
+    textMsg: "",
+    messages: [
+        { id: 1, date: "9:50 am", type: 'in', message: "Lorem ipsum dolor sit amet", messageType: "text" },
+        { id: 2, date: "9:50 am", type: 'out', message: "Lorem ipsum dolor sit amet", messageType: "text" }
+    ]
 };
 const chatReducer = (state = initialState, action) => {
     switch (action.type) {
