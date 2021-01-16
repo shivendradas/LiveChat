@@ -14,7 +14,7 @@ import {
 import { connect } from 'react-redux'
 import io from "socket.io-client";
 import SocketIOClient from 'socket.io-client';
-import { setTextMessage, setReceiverId } from '../../action/chatAction.js';
+import { setTextMessage, setMessages, setReceiverId } from '../../action/chatAction.js';
 import { CHAT_URL } from '../../constant/serviceUrls.js';
 //import { Icon } from 'react-native-paper/lib/typescript/src/components/Avatar/Avatar';
 //import styles from '../../styles/styles.js';
@@ -33,7 +33,17 @@ class ChatConversation extends Component {
         this.socket.emit('userId', this.props.senderId);
 
         this.socket.on('send_message', message => {
-            console.log("message in====" + message)
+            var messages = Object.assign([], this.props.messages);
+            const date = new Date().toDateString();
+            var messageObject = {
+                id: messages.length + 1,
+                date: date,
+                type: 'in',
+                message: message,
+                messageType: "text"
+            }
+            messages.push(messageObject);
+            this.props.setMessages(messages);
         });
     }
     sendMessage = () => {
@@ -66,7 +76,6 @@ class ChatConversation extends Component {
                         return item.id.toString();
                     }}
                     renderItem={(message) => {
-
                         const item = message.item;
                         console.log(item);
                         let inMessage = item.type === 'in';
@@ -80,7 +89,9 @@ class ChatConversation extends Component {
                                 {inMessage && this.renderDate(item.date)}
                             </View>
                         )
-                    }} />
+                    }}
+                    dataExtra={this.props}
+                />
                 <View style={styles.footer}>
                     <View style={styles.inputContainer}>
                         <TextInput style={styles.inputs}
@@ -183,6 +194,9 @@ const mapDispatchToProps = (dispatch) => {
     return {
         setTextMessage: (message) => {
             dispatch(setTextMessage(message))
+        },
+        setMessages: (message) => {
+            dispatch(setMessages(message))
         },
         setReceiverId: (receiverId) => {
             dispatch(setReceiverId(receiverId))

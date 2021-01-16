@@ -1,4 +1,4 @@
-import { RECEIVER_ID, SENDER_ID, TEXT_MSG } from "../constant/chatType";
+import { ADD_TO_MESSAGE_ARRAY, RECEIVER_ID, SENDER_ID, TEXT_MSG } from "../constant/chatType";
 
 const initialState = {
     senderId: "",
@@ -25,6 +25,11 @@ const chatReducer = (state = initialState, action) => {
             return Object.assign({}, state,
                 {
                     textMsg: action.message
+                });
+        case ADD_TO_MESSAGE_ARRAY:
+            return Object.assign({}, state,
+                {
+                    messages: action.message
                 });
         default:
             return state;
