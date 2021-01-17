@@ -46,7 +46,20 @@ class ChatConversation extends Component {
             this.props.setMessages(messages);
         });
     }
+    
     sendMessage = () => {
+        var messages = Object.assign([], this.props.messages);
+        const date = new Date().toDateString();
+        var messageObject = {
+            id: messages.length + 1,
+            date: date,
+            type: 'out',
+            message: this.props.textMsg,
+            messageType: "text"
+        }
+        messages.push(messageObject);
+        this.props.setMessages(messages);
+        
         const message = {
             'content': this.props.textMsg,
             'senderChatID': this.props.senderId,
