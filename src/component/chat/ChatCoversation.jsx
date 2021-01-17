@@ -34,13 +34,14 @@ class ChatConversation extends Component {
 
         this.socket.on('send_message', message => {
             var messages = Object.assign([], this.props.messages);
-            const date = new Date().toDateString();
             var messageObject = {
-                id: messages.length + 1,
-                date: date,
+                id: message.id,
+                date:  message.date,
                 type: 'in',
-                message: message,
-                messageType: "text"
+                content:  message.content,
+                senderChatID:  message.senderChatID,
+                receiverChatID:  message.receiverChatID,
+                messageType:  message.messageType
             }
             messages.push(messageObject);
             this.props.setMessages(messages);
@@ -49,22 +50,20 @@ class ChatConversation extends Component {
     
     sendMessage = () => {
         var messages = Object.assign([], this.props.messages);
-        const date = new Date().toDateString();
-        var messageObject = {
-            id: messages.length + 1,
-            date: date,
+        var id = new Date().getTime();
+        var dateTime = new Date(id).toLocaleTimeString();
+        var message = {
+            id: id,
+            date: dateTime,
             type: 'out',
-            message: this.props.textMsg,
+            content: this.props.textMsg,
+            senderChatID: this.props.senderId,
+            receiverChatID: this.props.receiverId,
             messageType: "text"
         }
-        messages.push(messageObject);
+        messages.push(message);
         this.props.setMessages(messages);
-        
-        const message = {
-            'content': this.props.textMsg,
-            'senderChatID': this.props.senderId,
-            'receiverChatID': this.props.receiverId
-        }
+           
         this.socket.emit('send_message', message);
         this.props.setTextMessage('');
     }
@@ -97,7 +96,7 @@ class ChatConversation extends Component {
                             <View style={[styles.item, itemStyle]}>
                                 {!inMessage && this.renderDate(item.date)}
                                 <View style={[styles.balloon]}>
-                                    <Text>{item.message}</Text>
+                                    <Text>{item.content}</Text>
                                 </View>
                                 {inMessage && this.renderDate(item.date)}
                             </View>
