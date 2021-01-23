@@ -6,6 +6,7 @@ import Form from './Form';
 import { loginRegister, loginSuccess } from '../../action/loginAction';
 import { FORM_TYPE } from '../../constant/loginTypes';
 import styles from '../../styles/styles.js';
+import dbStore from '../../store/dbStore';
 
 var RNFS = require('react-native-fs');
 
@@ -35,8 +36,9 @@ class Login extends React.Component {
             var content = {
                 "user": user,
                 "registeredNumber": nextProps.saveUserInfo.mobileNumber,
-                "registeredEmail": nextProps.saveUserInfo.registeredEail
+                "registeredEmail": nextProps.saveUserInfo.registeredEmail
             }
+            dbStore.setUserDetail(content);
             // write the file
             RNFS.writeFile(path, JSON.stringify(content), 'utf8')
                 .then((success) => {

@@ -7,6 +7,7 @@ import LoginLogo from './LoginLogo';
 import LoginRegister from './LoginRegister';
 import { PERMISSIONS, check, request, RESULTS } from 'react-native-permissions'
 import { setSenderId } from '../../action/chatAction';
+import dbStore from '../../store/dbStore';
 var RNFS = require('react-native-fs');
 class Authentication extends React.Component {
     constructor(props) {
@@ -14,38 +15,49 @@ class Authentication extends React.Component {
         this.checkAuthentication();
     }
 
-    async checkAuthentication() {
-        //const file  = require('../../res/register.json');
-        var path = RNFS.DocumentDirectoryPath + '/register.json';
+    async checkAuthentication() {        
         let file_content = null;
         try {
-            if (await RNFS.exists(path)) {
-                await RNFS.readFile(path, 'utf8')
-                    .then((data) => {
-                        file_content = data;
-                        console.log("got data: ", data);
-                        const jsonData = JSON.parse(data)
-                        if (jsonData && jsonData.registeredNumber) {
-                            this.props.setSenderId(jsonData.registeredNumber);
-                        }
-                    })
-                    .catch((e) => {
-                        console.error("got error: ", e);
-                    })
-            } else {
-                console.log("File does not exist");
-                const grantStatus = await this.checkPermission();
-                this.props.changeLoadingIconState(false, false);
-            }
+            file_content = await dbStore.getUserDetail();
+            //file_content = this.readFile();
         } catch (err) {
             console.log('ERROR:', err);
         }
-        const file = JSON.parse(file_content);
-        if (file && (file.user && file.user != "")) {
-            this.props.changeAuthenticationState(true, false, file.user);
+        if (file_content && file_content != '') {
+            const file = JSON.parse(file_content);
+            if (file && (file.user && file.user != "")) {
+                this.props.changeAuthenticationState(true, false, file.user);
+            } else {
+                this.props.changeLoadingIconState(false, false);
+            }
+        }
+    }
+    /**
+     * Read user detial from file
+     */
+    async readFile() {
+        var file_content = "";
+        //const file  = require('../../res/register.json');
+        var path = RNFS.DocumentDirectoryPath + '/register.json';
+        if (await RNFS.exists(path)) {
+            await RNFS.readFile(path, 'utf8')
+                .then((data) => {
+                    file_content = data;
+                    console.log("got data: ", data);
+                    const jsonData = JSON.parse(data)
+                    if (jsonData && jsonData.registeredNumber) {
+                        this.props.setSenderId(jsonData.registeredNumber);
+                    }
+                })
+                .catch((e) => {
+                    console.error("got error: ", e);
+                })
         } else {
+            console.log("File does not exist");
+            const grantStatus = await this.checkPermission();
             this.props.changeLoadingIconState(false, false);
         }
+        return file_content;
     }
     async checkPermission() {
         try {
