@@ -32,9 +32,11 @@ class Authentication extends React.Component {
                     this.props.setSenderId(file.registeredNumber);
                 }
             } else {
+                 const grantStatus = await this.checkPermission();
                 this.props.changeLoadingIconState(false, false);
             }
         } else {
+            const grantStatus = await this.checkPermission();
             this.props.changeLoadingIconState(false, false);
         }
     }
