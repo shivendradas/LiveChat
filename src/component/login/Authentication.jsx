@@ -15,10 +15,10 @@ class Authentication extends React.Component {
         this.checkAuthentication();
     }
 
-    async checkAuthentication() {        
+    async checkAuthentication() {
         let file_content = null;
         try {
-            file_content = await dbStore.getUserDetail();
+            file_content = await dbStore.getUserRegistrationQuery().getUserDetail();
             //file_content = this.readFile();
         } catch (err) {
             console.log('ERROR:', err);
@@ -27,9 +27,15 @@ class Authentication extends React.Component {
             const file = JSON.parse(file_content);
             if (file && (file.user && file.user != "")) {
                 this.props.changeAuthenticationState(true, false, file.user);
+                console.log("got data: ", file);
+                if (file && file.registeredNumber) {
+                    this.props.setSenderId(file.registeredNumber);
+                }
             } else {
                 this.props.changeLoadingIconState(false, false);
             }
+        } else {
+            this.props.changeLoadingIconState(false, false);
         }
     }
     /**

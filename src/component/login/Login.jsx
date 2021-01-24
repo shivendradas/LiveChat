@@ -38,7 +38,7 @@ class Login extends React.Component {
                 "registeredNumber": nextProps.saveUserInfo.mobileNumber,
                 "registeredEmail": nextProps.saveUserInfo.registeredEmail
             }
-            dbStore.setUserDetail(content);
+            dbStore.getUserRegistrationQuery().setUserDetail(content);
             // write the file
             RNFS.writeFile(path, JSON.stringify(content), 'utf8')
                 .then((success) => {
