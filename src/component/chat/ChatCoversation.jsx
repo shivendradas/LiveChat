@@ -1,20 +1,17 @@
 import React, { Component } from 'react';
 import {
-    StyleSheet,
     Text,
     View,
     TouchableOpacity,
     Image,
-    Alert,
-    ScrollView,
     TextInput,
-    FlatList,
-    Button
+    FlatList
 } from 'react-native';
 import { connect } from 'react-redux'
 import io from "socket.io-client";
 import SocketIOClient from 'socket.io-client';
-import { setTextMessage, setMessages, setReceiverId } from '../../action/chatAction.js';
+import { setTextMessage, setMessages, setReceiverId, setMessagesToDb } from '../../action/chatAction.js';
+import { MESSAGE_IN, MESSAGE_OUT } from '../../constant/chatType.js';
 import { CHAT_URL } from '../../constant/serviceUrls.js';
 //import { Icon } from 'react-native-paper/lib/typescript/src/components/Avatar/Avatar';
 import styles from '../../styles/chatScreenStyle.js';
@@ -36,18 +33,20 @@ class ChatConversation extends Component {
             var messages = Object.assign([], this.props.messages);
             var messageObject = {
                 id: message.id,
-                date:  message.date,
-                type: 'in',
-                content:  message.content,
-                senderChatID:  message.senderChatID,
-                receiverChatID:  message.receiverChatID,
-                messageType:  message.messageType
+                date: message.date,
+                type: MESSAGE_IN,
+                isMessageRead: false,
+                isMessageReached: false,
+                content: message.content,
+                senderChatID: message.senderChatID,
+                receiverChatID: message.receiverChatID,
+                messageType: message.messageType
             }
             messages.push(messageObject);
-            this.props.setMessages(messages);
+            this.props.setMessagesToDb(messages);
         });
     }
-    
+
     sendMessage = () => {
         var messages = Object.assign([], this.props.messages);
         var id = new Date().getTime();
@@ -55,17 +54,21 @@ class ChatConversation extends Component {
         var message = {
             id: id,
             date: dateTime,
-            type: 'out',
+            type: MESSAGE_OUT,
+            isMessageRead: false,
+            isMessageReached: false,
             content: this.props.textMsg,
             senderChatID: this.props.senderId,
             receiverChatID: this.props.receiverId,
             messageType: "text"
         }
-        messages.push(message);
-        this.props.setMessages(messages);
-           
-        this.socket.emit('send_message', message);
-        this.props.setTextMessage('');
+        if (message && message != '') {
+            messages.push(message);
+            this.props.setMessagesToDb(messages);
+
+            this.socket.emit('send_message', message);
+            this.props.setTextMessage('');
+        }
     }
     submitChatMessage() {
         this.sendMessage();
@@ -138,8 +141,8 @@ const mapDispatchToProps = (dispatch) => {
         setTextMessage: (message) => {
             dispatch(setTextMessage(message))
         },
-        setMessages: (message) => {
-            dispatch(setMessages(message))
+        setMessagesToDb: (message) => {
+            dispatch(setMessagesToDb(message))
         },
         setReceiverId: (receiverId) => {
             dispatch(setReceiverId(receiverId))

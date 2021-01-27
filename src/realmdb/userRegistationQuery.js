@@ -1,4 +1,4 @@
-import { userRegistrationSchema, USER_REGISTRATION_TBL } from "./realmSchemas";
+import { USER_REGISTRATION_TBL } from "./realmSchemas";
 import Realm from "realm";
 import { databaseOptions } from "./dbconfiguration";
 

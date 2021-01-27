@@ -1,7 +1,7 @@
-import { userRegistrationSchema } from "./realmSchemas";
+import { singleChatDetailSchema, userRegistrationSchema } from "./realmSchemas";
 
 export const databaseOptions = {
     path: "livechat.realm",
-    schema: [userRegistrationSchema],
+    schema: [userRegistrationSchema, singleChatDetailSchema],
     schemaVersion: 0 //optional
 }
