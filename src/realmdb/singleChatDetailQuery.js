@@ -13,18 +13,22 @@ export const setSingleChatConversation = async (message) => {
         return false;
     }
 }
-
-/*export const getUserDetail = async () => {
+/**
+ * Get all message between sender and receiver
+ * @param {} receiverId 
+ */
+export const getMessages = async (receiverId) => {
     try {
-        const userTable = await realm.objects(USER_REGISTRATION_TBL).sorted('registeredNumber', true);
-        const result = Array.from(userTable);
+        const messages = await realm.objects(SINGLE_CHAT_DETAIL__TBL).filtered('receiverChatID = "' + receiverId + '" OR senderChatID = "' + receiverId + '"');
+        const result = Array.from(messages);
         if (result.length > 0) {
-            return JSON.stringify(result[0]);
+            const jsonString = JSON.stringify(result);
+            return JSON.parse(jsonString);
         } else {
-            return '';
+            return [];
         }
     } catch (error) {
         console.log(error);
         return '';
     }
-}*/
+}

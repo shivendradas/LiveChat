@@ -10,7 +10,7 @@ import {
 import { connect } from 'react-redux'
 import io from "socket.io-client";
 import SocketIOClient from 'socket.io-client';
-import { setTextMessage, setMessages, setReceiverId, setMessagesToDb } from '../../action/chatAction.js';
+import { setTextMessage, getMessages, setReceiverId, setMessagesToDb } from '../../action/chatAction.js';
 import { MESSAGE_IN, MESSAGE_OUT } from '../../constant/chatType.js';
 import { CHAT_URL } from '../../constant/serviceUrls.js';
 //import { Icon } from 'react-native-paper/lib/typescript/src/components/Avatar/Avatar';
@@ -20,6 +20,7 @@ class ChatConversation extends Component {
 
     constructor(props) {
         super(props);
+        this.props.getMessagesForIndividual(props.route.params.contactNumber);
     }
     componentDidMount() {
         this.props.setReceiverId(this.props.route.params.contactNumber);
@@ -146,7 +147,10 @@ const mapDispatchToProps = (dispatch) => {
         },
         setReceiverId: (receiverId) => {
             dispatch(setReceiverId(receiverId))
-        }
+        },
+        getMessagesForIndividual: (receiverId) => {
+            dispatch(getMessages(receiverId))
+        },
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(ChatConversation);
