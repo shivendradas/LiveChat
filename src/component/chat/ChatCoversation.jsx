@@ -26,9 +26,9 @@ class ChatConversation extends Component {
         this.props.setReceiverId(this.props.route.params.contactNumber);
         this.socket = io(CHAT_URL);
         //this.socket = SocketIOClient(CHAT_URL); 
-        console.log(this.props)
-        console.log("chat==" + CHAT_URL)
-        this.socket.emit('userId', this.props.senderId);
+        if (this.props && this.props.senderId) {
+            this.socket.emit('userId', this.props.senderId);
+        } 
 
         this.socket.on('send_message', message => {
             var messages = Object.assign([], this.props.messages);
@@ -63,7 +63,7 @@ class ChatConversation extends Component {
             receiverChatID: this.props.receiverId,
             messageType: "text"
         }
-        if (message && message != '') {
+        if (message.content != '') {
             messages.push(message);
             this.props.setMessagesToDb(messages);
 
@@ -93,7 +93,6 @@ class ChatConversation extends Component {
                     }}
                     renderItem={(message) => {
                         const item = message.item;
-                        console.log(item);
                         let inMessage = item.type === 'in';
                         let itemStyle = inMessage ? styles.itemIn : styles.itemOut;
                         let itemBackgroundStyle = inMessage ? styles.itemStyleIn : styles.itemStyleOut;
@@ -109,6 +108,7 @@ class ChatConversation extends Component {
                         )
                     }}
                     dataExtra={this.props}
+                    maxToRenderPerBatch={10}
                 />
                 <View style={styles.footer}>
                     <View style={styles.inputContainer}>

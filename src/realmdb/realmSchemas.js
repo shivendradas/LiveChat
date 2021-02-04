@@ -28,3 +28,18 @@ export const singleChatDetailSchema = {
     }
 }
 
+export const chatSnapSchema = {
+    name: CHAT_SNAP_TBL,
+    primaryKey: 'receiverChatID',
+    properties: {
+        receiverChatID: { type: 'string' },
+        date: { type: 'string' },
+        type: { type: 'string' }, //in or out
+        chatType: { type: 'string' }, // Group or single
+        isMessageReached: { type: 'bool', default: false },
+        lastContent: { type: 'string' }, //last message
+        senderChatID: { type: 'string' },
+        unreadMsgCount: { type: 'int'},
+        messageType: { type: 'string' } //text, image, audio, video
+    }
+}

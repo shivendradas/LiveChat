@@ -29,10 +29,10 @@ export const getMessages = (recieverId) => {
     return async (dispatch) => {
         try {
             const messages = await dbStore.getSingleChatDetailQuery().getMessages(recieverId);
-            if (messages && messages.length > 0) {
+            if (messages && (messages.length > 0 || messages.length == 0)) {
                 dispatch(setMessages(messages));
             } else {
-                console.log("Error while saving chat detail")
+                console.log("Error while getting chat detail")
             }
         } catch (error) {
             console.error(error);
